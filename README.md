@@ -34,9 +34,9 @@ better-sqlite3 라이브러리를 활용해 SQL 기반의 데이터베이스를 
 #### 3. 인증 체계 셋팅
 현재 프로젝트는 전화번호 인증 후 Bearer token 밟급 후 고객의 UUID를 request에 저장하고 API 통신 시 활용하는 인증 체계가 셋팅 되어 있습니다. 생각 하는 이상적인 인증 체계를 완성 시켜주세요.
 
-#### 참고 하기
+# 참고 하기
 해당 프로젝트의 시작은 `src/server.js` 입니다. `src/server.js` 에서 각 도메인 별 component를 initializing 후 `service.js`, `dao.js` 를 통해 데이터 베이스를 핸들링 하고 API 로직을 완성하고 있습니다. 이미 작성된 `src/user` 디렉토리를 확인 해주세요.
 
-#### 라이브러리 참고
+# 라이브러리 참고
 - express : https://github.com/expressjs/express
 - better-sqlite3 : https://github.com/JoshuaWise/better-sqlite3
