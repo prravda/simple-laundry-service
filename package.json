@@ -1,0 +1,32 @@
+{
+  "type": "module",
+  "name": "nodejs-test",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node --experimental-specifier-resolution=node src/server.js",
+    "lint": "eslint \"src/**/*.js\"",
+    "format": "prettier --write \"src/**/*.js\""
+  },
+  "dependencies": {
+    "better-sqlite3": "^7.4.5",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "esm": "^3.2.25",
+    "express": "~4.16.1",
+    "fs": "0.0.1-security",
+    "http": "0.0.1-security",
+    "http-errors": "~1.6.3",
+    "jsonwebtoken": "^8.5.1",
+    "prettier": "^2.5.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-babel-module": "^5.3.1",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-prettier": "^4.0.0"
+  }
+}

@@ -1,0 +1,99 @@
+# .bak
+*.bak
+nvm/
+# dependencies
+node_modules/
+
+# IDE
+/.idea-profile
+/.awcache
+*.code-workspace
+
+# bundle
+packages/**/*.d.ts
+packages/**/*.js
+
+# misc
+.php_cs.dist
+.phpcs.xml
+.phpmd-ruleset
+sonar-project.properties
+.nvmrc
+.php-version
+
+.DS_Store
+lerna-debug.log
+npm-debug.log
+yarn-error.log
+/**/npm-debug.log
+/packages/**/.npmignore
+/packages/**/LICENSE
+
+# example
+/quick-start
+/example_dist
+/example
+
+# tests
+/test
+/coverage
+/.nyc_output
+/packages/graphql
+/benchmarks/memory
+build/config\.gypi
+
+# PHP
+vendor/
+
+# Configuration
+.env
+.env.*
+
+HELP.md
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### SonarScanner ###
+.scannerwork/
+
+### Elasticsearch ###
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+### package configure ###
+pm2.json
+package-lock.json
+yarn.lock
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+logs/
