@@ -3,7 +3,7 @@ import successWrapper from '../../libs/success';
 import BadRequestException from '../../exceptions/badRequestException';
 import { signing } from '../../middlewares/auth';
 
-import OrderService from './service';
+import UserService from './service';
 import Dao from './dao';
 
 export default class UserComponent {
