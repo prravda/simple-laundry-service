@@ -1,9 +1,21 @@
 import express from 'express';
+import { JWT_SECRET } from './config';
 
 export class NewApp {
   private app;
   constructor() {
     this.app = express();
-    // TODO: setup other bootstrap functions, for example set controllers, or else... for this application
   }
+  private listen() {
+    const port = JWT_SECRET || 3000;
+    this.app.listen(port, () => {
+      console.log(`Example app listening at http://localhost:${port}`);
+    });
+  }
+
+  private initializeControllers() {}
+
+  private initializeErrorHandling() {}
+
+  private initializeAuthentication() {}
 }
