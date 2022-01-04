@@ -1,5 +1,5 @@
-import { UserGenders } from '../new-user/types/user-genders';
-import { isActivatedUser } from '../new-user/types/is-activated.user';
+import { UserGenders } from '../api/user/types/user-genders';
+import { isActivatedUser } from '../api/user/types/is-activated.user';
 
 export interface CreateUserDto {
   userUUID: string;

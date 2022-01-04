@@ -7,11 +7,11 @@ import { createTablesQueries } from './create-tables-queries';
 // 해당 정의를 바꾸기 위해서는 library level 까지도 수정을 해야 하기 때문에
 // @ts-ignore comment 로 any type 을 부득이하게 허용하게 되었습니다.
 // 이 점 앙해 부탁드립니다.
-class NewDatabase {
+export class NewDatabase {
   // @ts-ignore
   private static database;
   private constructor() {}
-  private static getDatabase() {
+  public static getDatabase() {
     if (!this.database) {
       this.database = new Database('washswot');
       this.database.exec(createTablesQueries);

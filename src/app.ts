@@ -1,7 +1,7 @@
 import express from 'express';
 import { JWT_SECRET } from './config';
 
-export class NewApp {
+export class App {
   private app;
   constructor() {
     this.app = express();
