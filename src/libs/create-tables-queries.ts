@@ -1,4 +1,5 @@
-export const createTablesQueries = `CREATE TABLE users (
+export const createTableQueries = `
+CREATE TABLE IF NOT EXISTS users (
   uuid varchar(255) PRIMARY KEY,
   name varchar(255),
   nickname varchar(255),
@@ -12,58 +13,61 @@ export const createTablesQueries = `CREATE TABLE users (
   deleted_at timestamp
 );
 
-CREATE TABLE credentials (
-  id int PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS credentials (
+  id int PRIMARY KEY,
   refresh_token varchar(255),
   created_at timestamp,
-  updated_at timestamp
+  updated_at timestamp,
+  FOREIGN KEY (id) REFERENCES users (credential_id)
 );
 
-CREATE TABLE user_to_address (
-  id int PRIMARY KEY AUTO_INCREMENT,
-  user_uuid varchar(255),
-  address_id int
-);
-
-CREATE TABLE address (
-  id int PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS address (
+  id int PRIMARY KEY,
   address_line_one varchar(255),
   address_line_two varchar(255)
 );
 
-CREATE TABLE tasks (
-  id int PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS user_to_address (
+  id int PRIMARY KEY,
+  user_uuid varchar(255),
+  address_id int,
+  FOREIGN KEY (user_uuid) REFERENCES users (uuid),
+  FOREIGN KEY (address_id) REFERENCES users (default_address_id),
+  FOREIGN KEY (address_id) REFERENCES address (id),
+  FOREIGN KEY (address_id) REFERENCES tasks (address_id)
+);
+
+CREATE TABLE IF NOT EXISTS tasks (
+  id int PRIMARY KEY,
   user_uuid int,
   information_id int,
   mission_id int,
   address_id int,
-  location varchar(255)
+  location varchar(255),
+  FOREIGN KEY (user_uuid) REFERENCES users (uuid)
 );
 
-CREATE TABLE information (
-  id int PRIMARY KEY AUTO_INCREMENT,
-  time_id int
+CREATE TABLE IF NOT EXISTS information (
+  id int PRIMARY KEY,
+  time_id int,
+  FOREIGN KEY (id) REFERENCES tasks (information_id)
 );
 
-CREATE TABLE time (
+CREATE TABLE IF NOT EXISTS time (
   id int PRIMARY KEY,
   pickup timestamp,
-  delivery timestamp
+  delivery timestamp,
+  FOREIGN KEY (id) REFERENCES information (time_id)
 );
 
-CREATE TABLE missions (
-  id int PRIMARY KEY AUTO_INCREMENT,
-  item_list_id int
-);
-
-CREATE TABLE item_list_to_item (
-  id int PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS missions (
+  id int PRIMARY KEY,
   item_list_id int,
-  item_id int
+  FOREIGN KEY (id) REFERENCES tasks (mission_id)
 );
 
-CREATE TABLE items (
-  id int PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS items (
+  id int PRIMARY KEY,
   name varchar(255),
   user_message varchar(255),
   tag_list_id int,
@@ -71,55 +75,37 @@ CREATE TABLE items (
   image_list_id int
 );
 
-CREATE TABLE tag_list_to_tag (
-  id int PRIMARY KEY AUTO_INCREMENT,
-  tag_list_id int,
-  tag_id int
+CREATE TABLE IF NOT EXISTS item_list_to_item (
+  id int PRIMARY KEY,
+  item_list_id int,
+  item_id int,
+  FOREIGN KEY (item_list_id) REFERENCES missions (item_list_id),
+  FOREIGN KEY (item_id) REFERENCES items (id)
 );
 
-CREATE TABLE tags (
-  id int PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS tags (
+  id int PRIMARY KEY,
   name varchar(255)
 );
 
-CREATE TABLE item_to_image (
-  id int PRIMARY KEY AUTO_INCREMENT,
-  image_list_id int,
-  image_id int
+CREATE TABLE IF NOT EXISTS tag_list_to_tag (
+  id int PRIMARY KEY,
+  tag_list_id int,
+  tag_id int,
+  FOREIGN KEY (tag_list_id) REFERENCES items (tag_list_id),
+  FOREIGN KEY (tag_id) REFERENCES tags (id)
 );
 
-CREATE TABLE images (
-  id int PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS images (
+  id int PRIMARY KEY,
   image_id varchar(255),
   image_url varchar(255)
 );
 
-ALTER TABLE credentials ADD FOREIGN KEY (id) REFERENCES users (credential_id);
-
-ALTER TABLE user_to_address ADD FOREIGN KEY (user_uuid) REFERENCES users (uuid);
-
-ALTER TABLE user_to_address ADD FOREIGN KEY (address_id) REFERENCES users (default_address_id);
-
-ALTER TABLE user_to_address ADD FOREIGN KEY (address_id) REFERENCES address (id);
-
-ALTER TABLE tasks ADD FOREIGN KEY (user_uuid) REFERENCES users (uuid);
-
-ALTER TABLE user_to_address ADD FOREIGN KEY (address_id) REFERENCES tasks (address_id);
-
-ALTER TABLE missions ADD FOREIGN KEY (id) REFERENCES tasks (mission_id);
-
-ALTER TABLE information ADD FOREIGN KEY (id) REFERENCES tasks (information_id);
-
-ALTER TABLE time ADD FOREIGN KEY (id) REFERENCES information (time_id);
-
-ALTER TABLE item_list_to_item ADD FOREIGN KEY (item_list_id) REFERENCES missions (item_list_id);
-
-ALTER TABLE item_list_to_item ADD FOREIGN KEY (item_id) REFERENCES items (id);
-
-ALTER TABLE tag_list_to_tag ADD FOREIGN KEY (tag_list_id) REFERENCES items (tag_list_id);
-
-ALTER TABLE item_to_image ADD FOREIGN KEY (image_list_id) REFERENCES items (image_list_id);
-
-ALTER TABLE tag_list_to_tag ADD FOREIGN KEY (tag_id) REFERENCES tags (id);
-
-ALTER TABLE item_to_image ADD FOREIGN KEY (image_id) REFERENCES images (id);`;
+CREATE TABLE IF NOT EXISTS item_to_image (
+  id int PRIMARY KEY,
+  image_list_id int,
+  image_id int,
+  FOREIGN KEY (image_list_id) REFERENCES items (image_list_id),
+  FOREIGN KEY (image_id) REFERENCES images (id)
+);`;
