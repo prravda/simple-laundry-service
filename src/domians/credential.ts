@@ -1,4 +1,4 @@
-import { UpdateRefreshTokenDto } from '../api/credential/dto/update-refresh-token.dto';
+import { UpdateRefreshTokenDto } from '../components/credential/dto/update-refresh-token.dto';
 
 export interface CreateCredentialDto {
   refreshToken: string;

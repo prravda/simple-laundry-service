@@ -1,14 +1,17 @@
-import { UserGenders } from '../api/user/types/user-genders';
-import { isActivatedUser } from '../api/user/types/is-activated.user';
+import { UserGenders } from '../components/user/types/user-genders';
+import { isActivatedUser } from '../components/user/types/is-activated.user';
 
-export interface CreateUserDto {
-  userUUID: string;
+export interface CreateUserDtoForController {
   userName: string;
   userNickName: string;
   userCellPhoneNumber: string;
   userGender: UserGenders;
   userAddressLineOne: string;
   userAddressLineTwo: string;
+}
+
+export interface CreateUserDto extends CreateUserDtoForController {
+  userUUID: string;
   isActivatedUser: isActivatedUser;
   createdAt: Date;
   updatedAt: Date;
