@@ -45,16 +45,22 @@ export class User {
   isActivatedUser: isActivatedUser;
 
   // 인증 정보를 담는 credential 과의 relation
-  @OneToOne((type) => Credential, (credential) => credential.user)
+  @OneToOne((type) => Credential, (credential) => credential.user, {
+    cascade: true,
+  })
   @JoinColumn()
   credential: Credential;
 
   // 회원의 주소를 담는 address 와의 relation
-  @OneToMany(() => Address, (address) => address.user)
+  @OneToMany(() => Address, (address) => address.user, {
+    cascade: true,
+  })
   addresses: Address[];
 
   // 회원의 접수한 주문들을 담은 task 와의 relation
-  @OneToMany(() => Task, (task) => task.user)
+  @OneToMany(() => Task, (task) => task.user, {
+    cascade: true,
+  })
   tasks: Task[];
 
   @CreateDateColumn()

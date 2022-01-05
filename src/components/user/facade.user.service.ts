@@ -5,8 +5,10 @@ import { AbstractAddressService } from '../address/abstracts/abstract.address.se
 import { CreateUserDto } from '../../database/entities/user';
 import { AbstractAuthService } from '../auth/abstracts/abstract.auth.service';
 import { CreateAddressDto } from '../../database/entities/address';
+import { AbstractFacadeUserService } from './abstracts/abstract.facade.user.service';
+import { FindUserByUuidDto } from './dto/find-user-by-uuid.dto';
 
-export class FacadeUserService extends AbstractService {
+export class FacadeUserService extends AbstractFacadeUserService {
   constructor(
     private readonly userService: AbstractUserService,
     private readonly credentialService: AbstractCredentialService,
@@ -22,31 +24,35 @@ export class FacadeUserService extends AbstractService {
     const { addressLineOne, addressLineTwo, ...createUserDto } =
       createUserDtoWithAddressInformation;
     const user = this.userService.createUser(createUserDto);
-    // address 추가
-    user.addresses.push(
+    // add address entity
+    user.addresses = [
       this.addressService.createAddress({
         addressLineOne,
         addressLineTwo,
       }),
-    );
-    // access token 생성
+    ];
+    // create access token
     const accessToken = this.authService.createToken({
-      userUUID: user.uuid,
+      uuid: user.uuid,
       tokenType: 'access',
     });
-    // refresh token 생성
+    // create refresh token
     const refreshToken = this.authService.createToken({
-      userUUID: user.uuid,
+      uuid: user.uuid,
       tokenType: 'refresh',
     });
-    // credential 추가
+    // add credential entity
     user.credential = this.credentialService.createCredential({
       refreshToken,
     });
+    // save user and user-related entites
+    await this.userService.saveUser(user);
+    // return access token as a result of successful signup
+    return accessToken;
+  }
 
-    const savedResult = await this.userService.saveUser(user);
-    const { name, ...anotherInformation } = savedResult;
-
-    return name;
+  public async findUserByUUID(findUserByUuidDto: FindUserByUuidDto) {
+    const { uuid } = findUserByUuidDto;
+    return await this.userService.findUserByUUID({ uuid });
   }
 }

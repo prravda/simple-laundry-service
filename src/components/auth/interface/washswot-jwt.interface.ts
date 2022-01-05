@@ -1,7 +1,7 @@
 import { JwtPayload } from 'jsonwebtoken';
 
 export interface WashswotJwtInterface extends Partial<JwtPayload> {
-  userUUID: string;
+  uuid: string;
   iss: string;
   aud: string;
   iat: number;

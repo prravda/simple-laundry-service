@@ -9,8 +9,8 @@ export class RefreshToken extends AbstractToken {
   }
 
   public createToken(): string {
-    const { userUUID } = this.createTokenDto;
-    return jwt.sign({ userUUID }, getConfig().jwtSecret, {
+    const { uuid } = this.createTokenDto;
+    return jwt.sign({ uuid }, getConfig().jwtSecret, {
       algorithm: 'HS256',
       expiresIn: getConfig().refreshTokenExpiresIn,
       audience: getConfig().jwtAudience,

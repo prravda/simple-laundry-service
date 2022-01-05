@@ -22,15 +22,21 @@ export class Task {
   @ManyToOne(() => User, (user) => user.tasks)
   user: User;
 
-  @OneToOne((type) => Address, (address) => address.task)
+  @OneToOne((type) => Address, (address) => address.task, {
+    cascade: true,
+  })
   @JoinColumn()
   address: Address;
 
-  @OneToOne((type) => Information, (information) => information.task)
+  @OneToOne((type) => Information, (information) => information.task, {
+    cascade: true,
+  })
   @JoinColumn()
   information: Information;
 
-  @OneToOne((type) => Mission, (mission) => mission.task)
+  @OneToOne((type) => Mission, (mission) => mission.task, {
+    cascade: true,
+  })
   @JoinColumn()
   mission: Mission;
 }

@@ -1,14 +1,12 @@
 import {
   Column,
   Entity,
-  JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './user';
 import { Task } from './task';
-import { Information } from './information';
 
 export interface CreateAddressDto {
   addressLineOne: string;

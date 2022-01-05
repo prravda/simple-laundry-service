@@ -15,7 +15,9 @@ export class Mission {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => Item, (item) => item.mission)
+  @OneToMany(() => Item, (item) => item.mission, {
+    cascade: true,
+  })
   items: Item[];
 
   @OneToOne((type) => Task, (task) => task.mission)

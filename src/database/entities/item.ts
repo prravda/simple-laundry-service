@@ -29,10 +29,14 @@ export class Item {
   @Column()
   representativeItemImage: string;
 
-  @OneToMany(() => Image, (image) => image.item)
+  @OneToMany(() => Image, (image) => image.item, {
+    cascade: true,
+  })
   images: Image[];
 
-  @OneToMany(() => Tag, (tag) => tag.item)
+  @OneToMany(() => Tag, (tag) => tag.item, {
+    cascade: true,
+  })
   tags: Tag[];
 
   @ManyToOne(() => Mission, (mission) => mission.items)

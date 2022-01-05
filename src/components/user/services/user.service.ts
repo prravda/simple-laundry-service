@@ -4,9 +4,10 @@ import { AbstractUserService } from '../abstracts/abstract.user.service';
 import { CreateUserDto, User } from '../../../database/entities/user';
 import { FindUserByUuidDto } from '../dto/find-user-by-uuid.dto';
 import { FindUserByCellPhoneNumberDto } from '../dto/find-user-by-cell-phone-number.dto';
+import { AbstractUserRepository } from '../abstracts/abstract.user.repository';
 
 export class UserService extends AbstractUserService {
-  constructor(private readonly userRepository: Repository<User>) {
+  constructor(private readonly userRepository: AbstractUserRepository) {
     super();
   }
 
@@ -15,7 +16,7 @@ export class UserService extends AbstractUserService {
   }
 
   public createUser(createUserDto: CreateUserDto): User {
-    return this.userRepository.create({
+    return this.userRepository.createUser({
       uuid: this.generateUUID(),
       ...createUserDto,
     });
@@ -26,7 +27,7 @@ export class UserService extends AbstractUserService {
   ): Promise<User> {
     try {
       const { uuid } = findUserByUuidDto;
-      const result = await this.userRepository.findOne({ uuid });
+      const result = await this.userRepository.findUserByUUID({ uuid });
       if (result === undefined) {
         throw new Error('존재하지 않는 사용자입니다.');
       }
@@ -41,7 +42,9 @@ export class UserService extends AbstractUserService {
   ): Promise<User> {
     try {
       const { cellPhoneNumber } = findUserByCellPhoneNumberDto;
-      const result = await this.userRepository.findOne({ cellPhoneNumber });
+      const result = await this.userRepository.findUserByCellPhoneNumber({
+        cellPhoneNumber,
+      });
       if (result === undefined) {
         throw new Error('존재하지 않는 사용자입니다.');
       }
@@ -52,6 +55,6 @@ export class UserService extends AbstractUserService {
   }
 
   public async saveUser(user: User) {
-    return await this.userRepository.save<User>(user);
+    return await this.userRepository.saveUser(user);
   }
 }

@@ -23,7 +23,9 @@ export class Information {
   @OneToOne((type) => Task, (task) => task.information)
   task: Task;
 
-  @OneToOne((type) => Time, (time) => time.information)
+  @OneToOne((type) => Time, (time) => time.information, {
+    cascade: true,
+  })
   @JoinColumn()
   time: Time;
 }
