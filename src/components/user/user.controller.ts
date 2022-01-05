@@ -1,7 +1,10 @@
 import { AbstractUserController } from './abstracts/abstract.user.controller';
 import { Request, Response, Router } from 'express';
 import { AbstractUserService } from './abstracts/abstract.user.service';
-import { CreateUserDto, CreateUserDtoForController } from '../../domians/user';
+import {
+  CreateUserDto,
+  CreateUserDtoForController,
+} from '../../database/entities/user';
 
 export class UserController extends AbstractUserController {
   private readonly userRouter;

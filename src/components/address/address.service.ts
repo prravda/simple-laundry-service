@@ -1,6 +1,6 @@
 import { AbstractAddressService } from './abstracts/abstract.address.service';
-import { CreateAddressDto } from '../../domians/address';
-import { DatabaseObject } from '../../libs/database-object';
+import { CreateAddressDto } from '../../database/entities/address';
+import { DatabaseObject } from '../../database/typeorm-connection';
 
 export class AddressService extends AbstractAddressService {
   private connection: any;

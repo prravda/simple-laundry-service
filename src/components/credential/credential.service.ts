@@ -1,6 +1,9 @@
 import { AbstractCredentialService } from './abstracts/abstract.credential.service';
-import { CreateCredentialDto, Credential } from '../../domians/credential';
-import { DatabaseObject } from '../../libs/database-object';
+import {
+  CreateCredentialDto,
+  Credential,
+} from '../../database/entities/credential';
+import { DatabaseObject } from '../../database/typeorm-connection';
 
 export class CredentialService extends AbstractCredentialService {
   private connection;

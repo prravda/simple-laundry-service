@@ -1,8 +1,8 @@
 import { AbstractUserRepository } from './abstracts/abstract.user.repository';
 import { Database } from 'better-sqlite3';
-import { DatabaseObject } from '../../libs/database-object';
+import { DatabaseObject } from '../../database/typeorm-connection';
 import { FindUserByCellPhoneNumberDto } from './dto/find-user-by-cell-phone-number.dto';
-import { CreateUserDto, User } from '../../domians/user';
+import { CreateUserDto, User } from '../../database/entities/user';
 
 export class UserRepository extends AbstractUserRepository {
   private connection;

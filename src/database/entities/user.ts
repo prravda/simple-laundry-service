@@ -1,5 +1,3 @@
-import { UserGenders } from '../components/user/types/user-genders';
-import { isActivatedUser } from '../components/user/types/is-activated.user';
 import {
   Column,
   CreateDateColumn,
@@ -8,26 +6,27 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { TrueOrFalseStringType } from '../constants/true-or-false-string.type';
+import { UserGenders } from '../../components/user/types/user-genders';
+import { isActivatedUser } from '../../components/user/types/is-activated.user';
 @Entity()
 export class User {
   @PrimaryColumn()
   uuid: string;
 
   @Column()
-  name: stirng;
+  name: string;
 
   @Column()
-  nickname: stirng;
+  nickname: string;
 
   @Column()
-  cellPhoneNumber: stirng;
+  cellPhoneNumber: string;
 
   @Column()
   gender: UserGenders;
 
   @Column()
-  isActivatedUser: TrueOrFalseStringType;
+  isActivatedUser: isActivatedUser;
 
   @CreateDateColumn()
   createdAt: Date;

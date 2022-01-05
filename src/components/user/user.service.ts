@@ -3,7 +3,7 @@ import {
   CreateUserDto,
   CreateUserDtoForController,
   User,
-} from '../../domians/user';
+} from '../../database/entities/user';
 import cuid from 'cuid';
 
 export class UserService extends AbstractUserService {

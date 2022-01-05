@@ -1,4 +1,4 @@
-import { User } from '../../../domians/user';
+import { User } from '../../../database/entities/user';
 
 export abstract class AbstractUserRepository {
   public abstract insertUser(user: User): User;

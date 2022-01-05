@@ -1,5 +1,5 @@
-import { Information } from '../../../domians/information';
-import { Mission } from '../../../domians/mission';
+import { Information } from '../../../database/entities/information';
+import { Mission } from '../../../database/entities/mission';
 
 export interface CreateOrderDto {
   taskId: number;
