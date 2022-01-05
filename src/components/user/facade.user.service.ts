@@ -6,6 +6,7 @@ import { AbstractAuthService } from '../auth/abstracts/abstract.auth.service';
 import { CreateAddressDto } from '../../database/entities/address';
 import { AbstractFacadeUserService } from './abstracts/abstract.facade.user.service';
 import { FindUserByUuidDto } from './dto/find-user-by-uuid.dto';
+import { AccessAndRefreshTokenInterface } from '../auth/interface/access-and-refresh-token.interface';
 
 export class FacadeUserService extends AbstractFacadeUserService {
   constructor(
@@ -19,7 +20,7 @@ export class FacadeUserService extends AbstractFacadeUserService {
 
   public async insertUser(
     createUserDtoWithAddressInformation: CreateUserDto & CreateAddressDto,
-  ): Promise<string> {
+  ): Promise<AccessAndRefreshTokenInterface> {
     const { addressLineOne, addressLineTwo, ...createUserDto } =
       createUserDtoWithAddressInformation;
     const user = this.userService.createUser(createUserDto);
@@ -47,7 +48,7 @@ export class FacadeUserService extends AbstractFacadeUserService {
     // save user and user-related entites
     await this.userService.saveUser(user);
     // return access token as a result of successful signup
-    return accessToken;
+    return { accessToken, refreshToken };
   }
 
   public async findUserByUUID(findUserByUuidDto: FindUserByUuidDto) {
