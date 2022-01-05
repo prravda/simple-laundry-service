@@ -1,4 +1,3 @@
-import { AbstractService } from '../../constants/abstracts/abstract.service';
 import { AbstractUserService } from './abstracts/abstract.user.service';
 import { AbstractCredentialService } from '../credential/abstracts/abstract.credential.service';
 import { AbstractAddressService } from '../address/abstracts/abstract.address.service';
@@ -32,12 +31,12 @@ export class FacadeUserService extends AbstractFacadeUserService {
       }),
     ];
     // create access token
-    const accessToken = this.authService.createToken({
+    const accessToken = this.authService.createAccessToken({
       uuid: user.uuid,
       tokenType: 'access',
     });
     // create refresh token
-    const refreshToken = this.authService.createToken({
+    const refreshToken = this.authService.createRefreshToken({
       uuid: user.uuid,
       tokenType: 'refresh',
     });

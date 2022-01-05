@@ -1,10 +1,10 @@
 import { AbstractToken } from '../abstracts/abstract.token';
-import { CreateTokenDto } from '../dto/create-token.dto';
 import * as jwt from 'jsonwebtoken';
 import { getConfig } from '../../../config';
+import { CreateRefreshTokenDto } from '../dto/create-refresh-token.dto';
 
 export class RefreshToken extends AbstractToken {
-  constructor(private createTokenDto: CreateTokenDto) {
+  constructor(private createTokenDto: CreateRefreshTokenDto) {
     super();
   }
 
