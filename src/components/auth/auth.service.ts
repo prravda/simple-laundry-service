@@ -1,5 +1,5 @@
 import { AbstractAuthService } from './abstracts/abstract.auth.service';
-import { CreateTokenDto } from './dto/create-token.dto';
+import { CreateAccessTokenDto } from './dto/create-access-token.dto';
 import { AccessToken } from './concretes/access-token';
 import { RefreshToken } from './concretes/refresh-token';
 import { VerifyTokenDto } from './dto/verify-token.dto';
@@ -7,6 +7,7 @@ import * as jwt from 'jsonwebtoken';
 import { getConfig } from '../../config';
 import { DecodeTokenDto } from './dto/decode-token.dto';
 import { WashswotJwtInterface } from './interface/washswot-jwt.interface';
+import { CreateRefreshTokenDto } from './dto/create-refresh-token.dto';
 
 export class AuthService extends AbstractAuthService {
   constructor() {
@@ -15,10 +16,7 @@ export class AuthService extends AbstractAuthService {
 
   private validateVerifyResult(result: any): boolean {
     // validate 여부를 token 을 만들 때 사용한 userUUID 가 있는지 여부로 검사함
-    if (!result.userUUID) {
-      return false;
-    }
-    return true;
+    return result.userUUID;
   }
 
   private decodeToken(decodeTokenDto: DecodeTokenDto): WashswotJwtInterface {
@@ -37,31 +35,38 @@ export class AuthService extends AbstractAuthService {
     }
   }
 
-  public createToken(createTokenDto: CreateTokenDto): string {
+  public createAccessToken(createAccessTokenDto: CreateAccessTokenDto): string {
     try {
-      const { tokenType } = createTokenDto;
-      // access token 인 경우
-      if (tokenType === 'access') {
-        const token = new AccessToken(createTokenDto);
-        return token.createToken();
+      if (createAccessTokenDto.tokenType !== 'access') {
+        throw new Error('error: use valid token type');
       }
-      // refresh token 인 경우
-      if (tokenType === 'refresh') {
-        const token = new RefreshToken(createTokenDto);
-        return token.createToken();
-      }
-      throw new Error('error: invalid token creation');
+      const token = new AccessToken(createAccessTokenDto);
+      return token.createToken();
     } catch (e) {
       throw e;
     }
   }
 
-  public verifyToken(verifyTokenDto: VerifyTokenDto): boolean {
+  public createRefreshToken(
+    createRefreshTokenDto: CreateRefreshTokenDto,
+  ): string {
+    try {
+      if (createRefreshTokenDto.tokenType !== 'refresh') {
+        throw new Error('error: use valid token type');
+      }
+      const token = new RefreshToken(createRefreshTokenDto);
+      return token.createToken();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public verifyToken(verifyTokenDto: VerifyTokenDto): WashswotJwtInterface {
     const { token } = verifyTokenDto;
     const verifyResult = jwt.verify(token, getConfig().jwtSecret, {
       audience: getConfig().jwtAudience,
       issuer: getConfig().jwtIssuer,
     });
-    return this.validateVerifyResult(verifyResult);
+    return verifyResult as WashswotJwtInterface;
   }
 }

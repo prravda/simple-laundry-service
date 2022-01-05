@@ -1,14 +1,16 @@
-import { CreateUserDtoForController, User } from '../../../domians/user';
+import { CreateUserDto, User } from '../../../database/entities/user';
+import { AbstractService } from '../../../constants/abstracts/abstract.service';
 import { FindUserByUuidDto } from '../dto/find-user-by-uuid.dto';
 import { FindUserByCellPhoneNumberDto } from '../dto/find-user-by-cell-phone-number.dto';
-import { AbstractService } from '../../../constants/abstracts/abstract.service';
 
 export abstract class AbstractUserService extends AbstractService {
-  abstract insertUser(
-    createUserDtoForController: CreateUserDtoForController,
-  ): User;
-  // abstract findUserByUUID(findUserByUuidDto: FindUserByUuidDto): User | null;
-  // abstract findUserByCellPhoneNumber(
-  //   findUserByCellPhoneNumberDto: FindUserByCellPhoneNumberDto,
-  // ): User | null;
+  abstract createUser(createUserDto: CreateUserDto): User;
+
+  abstract findUserByUUID(findUserByUuidDto: FindUserByUuidDto): Promise<User>;
+
+  abstract findUserByCellPhoneNumber(
+    findUserByCellPhoneNumberDto: FindUserByCellPhoneNumberDto,
+  ): Promise<User>;
+
+  abstract saveUser(user: User): Promise<User>;
 }

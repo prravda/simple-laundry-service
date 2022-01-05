@@ -1,18 +1,19 @@
 import { AbstractCredentialService } from './abstracts/abstract.credential.service';
-import { CreateCredentialDto } from '../../domians/credential';
-import { DatabaseObject } from '../../libs/database-object';
+import {
+  CreateCredentialDto,
+  Credential,
+} from '../../database/entities/credential';
+import { AbstractCredentialRepository } from './abstracts/abstract.credential.repository';
 
 export class CredentialService extends AbstractCredentialService {
-  private connection;
-  constructor() {
+  constructor(
+    private readonly credentialRepository: AbstractCredentialRepository,
+  ) {
     super();
-    this.connection = DatabaseObject.getDatabase();
   }
-  createCredential(createCredentialDto: CreateCredentialDto): void {
-    const { refreshToken, createdAt, updatedAt } = createCredentialDto;
-    const insert = this.connection.prepare(
-      'INSERT INTO credentials (refresh_token, created_at, updated_at) VALUES (?, ?, ?)',
-    );
-    insert.run(refreshToken, createdAt, updatedAt);
+  public createCredential(
+    createCredentialDto: CreateCredentialDto,
+  ): Credential {
+    return this.credentialRepository.createCredential(createCredentialDto);
   }
 }

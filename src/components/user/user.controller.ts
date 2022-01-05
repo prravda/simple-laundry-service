@@ -1,11 +1,12 @@
 import { AbstractUserController } from './abstracts/abstract.user.controller';
-import { Request, Response, Router } from 'express';
-import { AbstractUserService } from './abstracts/abstract.user.service';
-import { CreateUserDto, CreateUserDtoForController } from '../../domians/user';
+import { Router } from 'express';
+import { CreateUserDto } from '../../database/entities/user';
+import { AbstractFacadeUserService } from './abstracts/abstract.facade.user.service';
+import { CreateAddressDto } from '../../database/entities/address';
 
 export class UserController extends AbstractUserController {
   private readonly userRouter;
-  constructor(private readonly userService: AbstractUserService) {
+  constructor(private readonly userService: AbstractFacadeUserService) {
     super();
     this.userRouter = Router();
     this.initializeRouter();
@@ -15,9 +16,12 @@ export class UserController extends AbstractUserController {
     const router = Router();
     const path = '/user';
 
-    router.post('/', (req, res) => {
-      const createUserDtoForController = req.body as CreateUserDtoForController;
-      const result = this.userService.insertUser(createUserDtoForController);
+    router.post('/', async (req, res) => {
+      const createUserDtoWithAddressInformation = req.body as CreateUserDto &
+        CreateAddressDto;
+      const result = await this.userService.insertUser(
+        createUserDtoWithAddressInformation,
+      );
       res.send(result);
     });
 

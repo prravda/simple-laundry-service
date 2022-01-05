@@ -1,6 +1,6 @@
 import { TokenType } from '../types/token-type';
 
-export interface CreateTokenDto {
+export interface CreateRefreshTokenDto {
   tokenType: TokenType;
-  userUUID: string;
+  uuid: string;
 }

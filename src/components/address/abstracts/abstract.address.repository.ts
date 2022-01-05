@@ -1,5 +1,6 @@
-import { AbstractService } from '../../../constants/abstracts/abstract.service';
+import { AbstractRepository } from 'typeorm';
 import { Address, CreateAddressDto } from '../../../database/entities/address';
-export abstract class AbstractAddressService extends AbstractService {
+
+export abstract class AbstractAddressRepository extends AbstractRepository<Address> {
   public abstract createAddress(createAddressDto: CreateAddressDto): Address;
 }
