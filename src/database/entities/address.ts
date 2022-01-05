@@ -1,4 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { User } from './user';
+import { Task } from './task';
+import { Information } from './information';
 
 export interface CreateAddressDto {
   addressLineOne: string;
@@ -15,4 +25,10 @@ export class Address {
 
   @Column()
   addressLineTwo: string;
+
+  @ManyToOne(() => User, (user) => user.addresses)
+  user: User;
+
+  @OneToOne((type) => Task, (task) => task.address)
+  task: Task;
 }

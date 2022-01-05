@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Information } from './information';
 
 export interface CreateTimeDto {
   pickup: Date;
@@ -15,4 +22,8 @@ export class Time {
 
   @Column()
   delivery: Date;
+
+  @OneToOne((type) => Information, (information) => information.time)
+  @JoinColumn()
+  information: Information;
 }

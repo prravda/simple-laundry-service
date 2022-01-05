@@ -4,10 +4,12 @@
     "target": "es2016",
     "module": "commonjs",
     "outDir": "./dist",
+    "types": ["node", "jest"],
     "strict": true,
     "esModuleInterop": true,
     "inlineSourceMap": true,
     "noImplicitAny": false,
-
+    "strictPropertyInitialization": false,
+    "emitDecoratorMetadata": true
   }
 }

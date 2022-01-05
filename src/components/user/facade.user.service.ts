@@ -5,40 +5,48 @@ import { AbstractAddressService } from '../address/abstracts/abstract.address.se
 import { CreateUserDto } from '../../database/entities/user';
 import { AbstractAuthService } from '../auth/abstracts/abstract.auth.service';
 import { CreateAddressDto } from '../../database/entities/address';
-import { CreateCredentialDto } from '../../database/entities/credential';
-import { TokenType } from '../auth/types/token-type';
-import { AbstractToken } from '../auth/abstracts/abstract.token';
-import { CreateTokenDto } from '../auth/dto/create-token.dto';
 
 export class FacadeUserService extends AbstractService {
   constructor(
-    private userService: AbstractUserService,
-    private credentialService: AbstractCredentialService,
-    private addressService: AbstractAddressService,
-    private authService: AbstractAuthService,
+    private readonly userService: AbstractUserService,
+    private readonly credentialService: AbstractCredentialService,
+    private readonly addressService: AbstractAddressService,
+    private readonly authService: AbstractAuthService,
   ) {
     super();
   }
 
-  private createToken(createTokenDto: CreateTokenDto): string {
-    return this.authService.createToken(createTokenDto);
-  }
-
-  private createAddress(createAddressDto: CreateAddressDto) {
-    return this.addressService.createAddress(createAddressDto);
-  }
-
-  private createCredential(createCredentialDto: CreateCredentialDto) {
-    return this.credentialService.createCredential(createCredentialDto);
-  }
-
-  public insertUser(createUserDto: CreateUserDto) {
-    const { userUUID, userAddressLineOne, userAddressLineTwo } = createUserDto;
-    const accessToken = this.createToken({ userUUID, tokenType: 'access' });
-    const refreshToken = this.createToken({ userUUID, tokenType: 'refresh' });
-    const address = this.createAddress({
-      addressLineOne: userAddressLineOne,
-      addressLineTwo: userAddressLineTwo,
+  public async insertUser(
+    createUserDtoWithAddressInformation: CreateUserDto & CreateAddressDto,
+  ): Promise<string> {
+    const { addressLineOne, addressLineTwo, ...createUserDto } =
+      createUserDtoWithAddressInformation;
+    const user = this.userService.createUser(createUserDto);
+    // address 추가
+    user.addresses.push(
+      this.addressService.createAddress({
+        addressLineOne,
+        addressLineTwo,
+      }),
+    );
+    // access token 생성
+    const accessToken = this.authService.createToken({
+      userUUID: user.uuid,
+      tokenType: 'access',
     });
+    // refresh token 생성
+    const refreshToken = this.authService.createToken({
+      userUUID: user.uuid,
+      tokenType: 'refresh',
+    });
+    // credential 추가
+    user.credential = this.credentialService.createCredential({
+      refreshToken,
+    });
+
+    const savedResult = await this.userService.saveUser(user);
+    const { name, ...anotherInformation } = savedResult;
+
+    return name;
   }
 }

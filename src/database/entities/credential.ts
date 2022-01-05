@@ -2,14 +2,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from './user';
 
 export interface CreateCredentialDto {
   refreshToken: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 @Entity()
@@ -19,6 +20,9 @@ export class Credential {
 
   @Column()
   refreshToken: string;
+
+  @OneToOne((type) => User, (user) => user.credential)
+  user: User;
 
   @CreateDateColumn()
   createdAt: Date;

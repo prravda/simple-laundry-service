@@ -15,10 +15,7 @@ export class AuthService extends AbstractAuthService {
 
   private validateVerifyResult(result: any): boolean {
     // validate 여부를 token 을 만들 때 사용한 userUUID 가 있는지 여부로 검사함
-    if (!result.userUUID) {
-      return false;
-    }
-    return true;
+    return result.userUUID;
   }
 
   private decodeToken(decodeTokenDto: DecodeTokenDto): WashswotJwtInterface {
@@ -56,12 +53,12 @@ export class AuthService extends AbstractAuthService {
     }
   }
 
-  public verifyToken(verifyTokenDto: VerifyTokenDto): boolean {
+  public verifyToken(verifyTokenDto: VerifyTokenDto): WashswotJwtInterface {
     const { token } = verifyTokenDto;
     const verifyResult = jwt.verify(token, getConfig().jwtSecret, {
       audience: getConfig().jwtAudience,
       issuer: getConfig().jwtIssuer,
     });
-    return this.validateVerifyResult(verifyResult);
+    return verifyResult as WashswotJwtInterface;
   }
 }

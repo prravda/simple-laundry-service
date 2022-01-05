@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Item } from './item';
 
 export interface CreateImageDto {
   imageId: string;
@@ -15,4 +16,7 @@ export class Image {
 
   @Column()
   imageUrl: string;
+
+  @ManyToOne(() => Item, (item) => item.images)
+  item: Item;
 }

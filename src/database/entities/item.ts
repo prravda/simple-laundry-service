@@ -1,4 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Mission } from './mission';
+import { Image } from './image';
+import { Tag } from './tag';
 
 export interface CreateItemDto {
   name: string;
@@ -19,4 +28,13 @@ export class Item {
 
   @Column()
   representativeItemImage: string;
+
+  @OneToMany(() => Image, (image) => image.item)
+  images: Image[];
+
+  @OneToMany(() => Tag, (tag) => tag.item)
+  tags: Tag[];
+
+  @ManyToOne(() => Mission, (mission) => mission.items)
+  mission: Mission;
 }

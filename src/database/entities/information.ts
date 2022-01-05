@@ -1,4 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Task } from './task';
+import { Address } from './address';
+import { Time } from './time';
 
 export interface CreateInformationDto {
   addressLineOne: string;
@@ -11,12 +20,10 @@ export class Information {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  addresLineOne: string;
+  @OneToOne((type) => Task, (task) => task.information)
+  task: Task;
 
-  @Column()
-  addresLineTwo: string;
-
-  @Column()
-  location: string;
+  @OneToOne((type) => Time, (time) => time.information)
+  @JoinColumn()
+  time: Time;
 }
