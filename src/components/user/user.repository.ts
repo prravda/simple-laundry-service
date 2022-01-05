@@ -11,22 +11,21 @@ export class UserRepository extends AbstractUserRepository {
     this.connection = DatabaseObject.getDatabase();
   }
 
-  public insertUser(createUserDto: CreateUserDto): User {}
-
-  public findUserByCellPhoneNumber(
-    findUserByCellPhoneNumberDto: FindUserByCellPhoneNumberDto,
-  ) {
-    const { cellPhoneNumber } = findUserByCellPhoneNumberDto;
-    const select = this.connection.prepare(
-      'SELECT * FROM users WHERE cell_phone_number = ?',
-    );
-    const result = select.get(cellPhoneNumber) as User;
-    return result;
-  }
-
-  findUserByUUID(): User {
-    return undefined;
-  }
-
-  softDeleteUser(): void {}
+  public insertUser(user: User): User {}
+  // public findUserByCellPhoneNumber(
+  //   findUserByCellPhoneNumberDto: FindUserByCellPhoneNumberDto,
+  // ) {
+  //   const { cellPhoneNumber } = findUserByCellPhoneNumberDto;
+  //   const select = this.connection.prepare(
+  //     'SELECT * FROM users WHERE cell_phone_number = ?',
+  //   );
+  //   const result = select.get(cellPhoneNumber) as User;
+  //   return result;
+  // }
+  //
+  // findUserByUUID(): User {
+  //   return undefined;
+  // }
+  //
+  // softDeleteUser(): void {}
 }

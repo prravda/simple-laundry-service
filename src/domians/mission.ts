@@ -1,16 +1,9 @@
-import { Item } from './item';
+import { Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-export interface CreateMissionDto {
-  itemList: Item[];
-}
+export interface CreateMissionDto {}
 
+@Entity()
 export class Mission {
-  get itemList(): Item[] {
-    return this._itemList;
-  }
-
-  private readonly _itemList: Item[];
-  constructor({ itemList }: CreateMissionDto) {
-    this._itemList = itemList;
-  }
+  @PrimaryGeneratedColumn()
+  id: number;
 }

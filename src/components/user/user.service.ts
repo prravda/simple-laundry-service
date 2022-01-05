@@ -5,27 +5,23 @@ import {
   User,
 } from '../../domians/user';
 import cuid from 'cuid';
-import { isActivatedUser } from './types/is-activated.user';
-import { DeleteUserByUuidDto } from './dto/delete-user-by-uuid.dto';
 
 export class UserService extends AbstractUserService {
   constructor() {
     super();
   }
 
-  private static generateUUID(): string {
+  private generateUUID(): string {
     return cuid();
   }
 
-  public insertUser(
-    createUserDtoForController: CreateUserDtoForController,
-  ): User {
+  public insertUser(createUserDto: CreateUserDto): User {
     return new User({
       userUUID: this.generateUUID(),
       ...createUserDtoForController,
       isActivatedUser: 'true',
       createdAt: new Date(),
       updatedAt: new Date(),
-    });
+    } as CreateUserDto);
   }
 }

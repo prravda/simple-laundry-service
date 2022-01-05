@@ -1,19 +1,18 @@
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
 export interface CreateImageDto {
   imageId: string;
   imageUrl: string;
 }
 
+@Entity()
 export class Image {
-  get imageUrl(): string {
-    return this._imageUrl;
-  }
-  get imageId(): string {
-    return this._imageId;
-  }
-  private readonly _imageId: string;
-  private readonly _imageUrl: string;
-  constructor({ imageId, imageUrl }: CreateImageDto) {
-    this._imageId = imageId;
-    this._imageUrl = imageUrl;
-  }
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  imageId: string;
+
+  @Column()
+  imageUrl: string;
 }

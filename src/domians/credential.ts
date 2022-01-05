@@ -1,4 +1,10 @@
-import { UpdateRefreshTokenDto } from '../components/credential/dto/update-refresh-token.dto';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 export interface CreateCredentialDto {
   refreshToken: string;
@@ -6,45 +12,17 @@ export interface CreateCredentialDto {
   updatedAt: Date;
 }
 
+@Entity()
 export class Credential {
-  private _refreshToken: string;
-  private _createdAt: Date;
-  private _updatedAt: Date;
-  constructor({ refreshToken, createdAt, updatedAt }: CreateCredentialDto) {
-    this._refreshToken = refreshToken;
-    this._createdAt = createdAt;
-    this._updatedAt = updatedAt;
-  }
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  get refreshToken(): string {
-    return this._refreshToken;
-  }
+  @Column()
+  refreshToken: string;
 
-  set refreshToken(value: string) {
-    this._refreshToken = value;
-  }
+  @CreateDateColumn()
+  createdAt: Date;
 
-  get createdAt(): Date {
-    return this._createdAt;
-  }
-
-  set createdAt(value: Date) {
-    this._createdAt = value;
-  }
-
-  get updatedAt(): Date {
-    return this._updatedAt;
-  }
-
-  set updatedAt(value: Date) {
-    this._updatedAt = value;
-  }
-
-  public updateRefreshToken({
-    refreshToken,
-    updatedAt,
-  }: UpdateRefreshTokenDto) {
-    this.refreshToken = refreshToken;
-    this.updatedAt = updatedAt;
-  }
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

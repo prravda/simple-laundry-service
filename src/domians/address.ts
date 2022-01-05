@@ -1,13 +1,18 @@
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
 export interface CreateAddressDto {
   addressLineOne: string;
   addressLineTwo: string;
 }
 
+@Entity()
 export class Address {
-  private addressLineOne: string;
-  private addressLineTwo: string;
-  constructor({ addressLineOne, addressLineTwo }: CreateAddressDto) {
-    this.addressLineOne = addressLineOne;
-    this.addressLineTwo = addressLineTwo;
-  }
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  addressLineOne: string;
+
+  @Column()
+  addressLineTwo: string;
 }
