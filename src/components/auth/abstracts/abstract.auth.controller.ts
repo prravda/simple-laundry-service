@@ -1,2 +1,3 @@
 import { AbstractController } from '../../../constants/abstracts/abstract.controller';
-export abstract class AbstractUserController extends AbstractController {}
+
+export abstract class AbstractAuthController extends AbstractController {}

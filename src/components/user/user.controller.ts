@@ -3,6 +3,9 @@ import { Router } from 'express';
 import { CreateUserDto } from '../../database/entities/user';
 import { AbstractFacadeUserService } from './abstracts/abstract.facade.user.service';
 import { CreateAddressDto } from '../../database/entities/address';
+import passport from 'passport';
+import { WashSwotStrategy } from '../auth/strategies/wash-swot-strategy';
+import { AuthorizedUserInterface } from '../auth/interface/authorized-user.interface';
 
 export class UserController extends AbstractUserController {
   private readonly userRouter;
@@ -25,9 +28,15 @@ export class UserController extends AbstractUserController {
       res.send(result);
     });
 
-    router.get('/me', (req, res) => {
-      res.send('user service');
-    });
+    router.get(
+      '/me',
+      passport.authenticate(WashSwotStrategy, { session: false }),
+      async (req, res) => {
+        const { uuid } = req.user as AuthorizedUserInterface;
+        const user = await this.userService.findUserByUUID({ uuid });
+        res.send(user);
+      },
+    );
 
     this.userRouter.use(path, router);
   }

@@ -1,4 +1,4 @@
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 import cuid from 'cuid';
 import { TokenType } from '../types/token-type';
 import { getConfig } from '../../../config';

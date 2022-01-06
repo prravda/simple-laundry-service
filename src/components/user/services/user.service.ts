@@ -1,5 +1,4 @@
 import cuid from 'cuid';
-import { Repository } from 'typeorm';
 import { AbstractUserService } from '../abstracts/abstract.user.service';
 import { CreateUserDto, User } from '../../../database/entities/user';
 import { FindUserByUuidDto } from '../dto/find-user-by-uuid.dto';

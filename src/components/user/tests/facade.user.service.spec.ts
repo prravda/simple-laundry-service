@@ -1,11 +1,11 @@
 import { FacadeUserService } from '../facade.user.service';
 import { UserService } from '../services/user.service';
 import { MockUserRepository } from '../repositories/mock.user.repository';
-import { CredentialService } from '../../credential/credential.service';
+import { CredentialService } from '../../credential/services/credential.service';
 import { MockCredentialRepository } from '../../credential/repositories/mock.credential.repository';
 import { AddressService } from '../../address/address.service';
 import { MockAddressRepository } from '../../address/repositories/mock.address.repository';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from '../../auth/services/auth.service';
 import { CreateUserDto } from '../../../database/entities/user';
 import { CreateAddressDto } from '../../../database/entities/address';
 import { getConfig } from '../../../config';
