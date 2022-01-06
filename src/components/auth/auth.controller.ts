@@ -19,7 +19,6 @@ export class AuthController extends AbstractAuthController {
       '/renew',
       passport.authenticate(WashSwotStrategy, { session: false }),
       async (req: Request, res: Response, next: NextFunction) => {
-        console.log(req.user);
         const { uuid } = req.user as AuthorizedUserInterface;
         const result = await this.facadeAuthService.updateCredentialByUUID({
           uuid,
