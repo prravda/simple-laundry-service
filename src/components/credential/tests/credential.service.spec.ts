@@ -1,4 +1,4 @@
-import { CredentialService } from '../credential.service';
+import { CredentialService } from '../services/credential.service';
 import { MockCredentialRepository } from '../repositories/mock.credential.repository';
 
 describe('credential component service test', () => {

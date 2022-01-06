@@ -1,13 +1,13 @@
-import { AbstractAuthService } from './abstracts/abstract.auth.service';
-import { CreateAccessTokenDto } from './dto/create-access-token.dto';
-import { AccessToken } from './concretes/access-token';
-import { RefreshToken } from './concretes/refresh-token';
-import { VerifyTokenDto } from './dto/verify-token.dto';
+import { AbstractAuthService } from '../abstracts/abstract.auth.service';
+import { CreateAccessTokenDto } from '../dto/create-access-token.dto';
+import { AccessToken } from '../concretes/access-token';
+import { RefreshToken } from '../concretes/refresh-token';
+import { VerifyTokenDto } from '../dto/verify-token.dto';
 import * as jwt from 'jsonwebtoken';
-import { getConfig } from '../../config';
-import { DecodeTokenDto } from './dto/decode-token.dto';
-import { WashswotJwtInterface } from './interface/washswot-jwt.interface';
-import { CreateRefreshTokenDto } from './dto/create-refresh-token.dto';
+import { getConfig } from '../../../config';
+import { DecodeTokenDto } from '../dto/decode-token.dto';
+import { WashswotJwtInterface } from '../interface/washswot-jwt.interface';
+import { CreateRefreshTokenDto } from '../dto/create-refresh-token.dto';
 
 export class AuthService extends AbstractAuthService {
   constructor() {

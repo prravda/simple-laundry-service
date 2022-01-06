@@ -3,6 +3,7 @@ import {
   CreateCredentialDto,
   Credential,
 } from '../../../database/entities/credential';
+import { UpdateCredentialByUuidDto } from '../dto/update-credential-by-uuid.dto';
 
 export class MockCredentialRepository extends AbstractCredentialRepository {
   constructor() {
@@ -14,5 +15,11 @@ export class MockCredentialRepository extends AbstractCredentialRepository {
     const mockCredential = new Credential();
     mockCredential.refreshToken = createCredentialDto.refreshToken;
     return mockCredential;
+  }
+
+  updateCredential(
+    updateCredentialByUuidDto: UpdateCredentialByUuidDto,
+  ): Promise<boolean> {
+    return Promise.resolve(true);
   }
 }

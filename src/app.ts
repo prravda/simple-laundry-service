@@ -1,4 +1,4 @@
-import express, { Express, Router } from 'express';
+import express, { Router } from 'express';
 import { getConfig } from './config';
 import { AbstractComponent } from './constants/abstracts/abstract.component';
 

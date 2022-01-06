@@ -4,6 +4,7 @@ dotenv.config();
 export interface ConfigList {
   jwtSecret: string;
   portNumber: string;
+  jwtAlgorithm: string;
   databaseName: string;
   jwtAudience: string;
   jwtIssuer: string;
@@ -14,6 +15,7 @@ export interface ConfigList {
 export const getConfig = (): ConfigList => {
   const {
     PORT,
+    JWT_ALGORITHM,
     JWT_SECRET,
     JWT_AUDIENCE,
     JWT_ISSUER,
@@ -23,6 +25,7 @@ export const getConfig = (): ConfigList => {
   } = process.env;
   if (
     !PORT ||
+    !JWT_ALGORITHM ||
     !JWT_SECRET ||
     !JWT_AUDIENCE ||
     !JWT_ISSUER ||
@@ -34,6 +37,7 @@ export const getConfig = (): ConfigList => {
   }
   return {
     jwtSecret: JWT_SECRET,
+    jwtAlgorithm: JWT_ALGORITHM,
     portNumber: PORT,
     jwtAudience: JWT_AUDIENCE,
     jwtIssuer: JWT_ISSUER,
