@@ -1,7 +1,7 @@
 import { AbstractAuthService } from '../abstracts/abstract.auth.service';
 import { CreateAccessTokenDto } from '../dto/create-access-token.dto';
-import { AccessToken } from '../concretes/access-token';
-import { RefreshToken } from '../concretes/refresh-token';
+import { AccessToken } from '../types/access-token';
+import { RefreshToken } from '../types/refresh-token';
 import { VerifyTokenDto } from '../dto/verify-token.dto';
 import * as jwt from 'jsonwebtoken';
 import { getConfig } from '../../../config';

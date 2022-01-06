@@ -10,10 +10,6 @@ import { Address } from './address';
 import { Information } from './information';
 import { Mission } from './mission';
 
-export interface CreateTaskDto {
-  taskId: number;
-}
-
 @Entity()
 export class Task {
   @PrimaryGeneratedColumn()
