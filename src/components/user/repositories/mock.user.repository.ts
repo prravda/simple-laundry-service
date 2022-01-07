@@ -2,7 +2,7 @@ import { AbstractUserRepository } from '../abstracts/abstract.user.repository';
 import { CreateUserDto, User } from '../../../database/entities/user';
 import { FindUserByCellPhoneNumberDto } from '../dto/find-user-by-cell-phone-number.dto';
 import { FindUserByUuidDto } from '../dto/find-user-by-uuid.dto';
-import { DeepPartial, UpdateResult } from 'typeorm';
+import { DeepPartial, FindOneOptions, UpdateResult } from 'typeorm';
 import { DeleteUserByUuidDto } from '../dto/delete-user-by-uuid.dto';
 
 export class MockUserRepository extends AbstractUserRepository {
@@ -55,5 +55,13 @@ export class MockUserRepository extends AbstractUserRepository {
     return new Promise<UpdateResult>((res, rej) => {
       res(mockUpdateResult);
     });
+  }
+
+  // TODO: implement the mock method for testing
+  findUserByUUIDWithCondition(
+    findUserByUuidDto: FindUserByUuidDto,
+    option: FindOneOptions<User>,
+  ): Promise<User> {
+    return Promise.resolve(new User());
   }
 }

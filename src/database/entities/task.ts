@@ -1,17 +1,25 @@
 import {
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { User } from './user';
-import { Address } from './address';
-import { Information } from './information';
+import { CreateAddressDto } from './address';
+import { CreateInformationDto, Information } from './information';
 import { Mission } from './mission';
+import { CreateTimeDto } from './time';
+import { CreateItemWithCreateImageListAndTagList } from './item';
 
-export interface CreateTaskDto {
-  taskId: number;
+export interface CreateAndSaveTaskDto {
+  createInformationDto: CreateInformationDto;
+  createAddressDto: CreateAddressDto;
+  createTimeDto: CreateTimeDto;
+  createItemListWithImageListAndTagListDto: CreateItemWithCreateImageListAndTagList[];
 }
 
 @Entity()
@@ -21,12 +29,6 @@ export class Task {
 
   @ManyToOne(() => User, (user) => user.tasks)
   user: User;
-
-  @OneToOne((type) => Address, (address) => address.task, {
-    cascade: true,
-  })
-  @JoinColumn()
-  address: Address;
 
   @OneToOne((type) => Information, (information) => information.task, {
     cascade: true,
@@ -39,4 +41,13 @@ export class Task {
   })
   @JoinColumn()
   mission: Mission;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

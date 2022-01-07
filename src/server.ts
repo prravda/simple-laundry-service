@@ -13,6 +13,23 @@ import { AddressRepository } from './components/address/repositories/address.rep
 import { AuthComponent } from './components/auth/auth.component';
 import { AuthController } from './components/auth/auth.controller';
 import { FacadeAuthService } from './components/auth/facade.auth.service';
+import { TaskComponent } from './components/task/task.component';
+import { TaskController } from './components/task/task.controller';
+import { FacadeTaskService } from './components/task/facade.task.service';
+import { ImageService } from './components/image/image.service';
+import { ImageRepository } from './components/image/image.repository';
+import { InformationService } from './components/information/information.service';
+import { InformationRepository } from './components/information/information.repository';
+import { TimeService } from './components/time/time.service';
+import { TimeRepository } from './components/time/time.repository';
+import { ItemRepository } from './components/item/item.repository';
+import { MissionService } from './components/mission/mission.service';
+import { MissionRepository } from './components/mission/mission.repository';
+import { TagService } from './components/tag/tag.service';
+import { TagRepository } from './components/tag/tag.repository';
+import { ItemService } from './components/item/item.service';
+import { TaskService } from './components/task/task.service';
+import { TaskRepository } from './components/task/task.repository';
 
 async function start() {
   await TypeOrmConnection.getConnection();
@@ -32,6 +49,21 @@ async function start() {
         new FacadeAuthService(
           new AuthService(),
           new CredentialService(new CredentialRepository()),
+        ),
+      ),
+    ),
+    new TaskComponent(
+      new TaskController(
+        new FacadeTaskService(
+          new UserService(new UserRepository()),
+          new ImageService(new ImageRepository()),
+          new AddressService(new AddressRepository()),
+          new InformationService(new InformationRepository()),
+          new TimeService(new TimeRepository()),
+          new ItemService(new ItemRepository()),
+          new MissionService(new MissionRepository()),
+          new TagService(new TagRepository()),
+          new TaskService(new TaskRepository()),
         ),
       ),
     ),
