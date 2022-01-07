@@ -18,7 +18,11 @@ export class TimeService extends AbstractTimeService {
     return true;
   }
 
-  public async createTime(createTimeDto: CreateTimeDto): Promise<Time> {
+  public createTime(createTimeDto: CreateTimeDto): Time {
+    return this.timeRepository.createTime(createTimeDto);
+  }
+
+  public async saveTime(createTimeDto: CreateTimeDto): Promise<Time> {
     try {
       const isValid = this.validateCreateTimeDto(createTimeDto);
       if (isValid) {

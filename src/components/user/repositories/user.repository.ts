@@ -1,6 +1,10 @@
 import { AbstractUserRepository } from '../abstracts/abstract.user.repository';
-import { DeepPartial, Repository, UpdateResult } from 'typeorm';
-import { Address } from '../../../database/entities/address';
+import {
+  FindConditions,
+  FindOneOptions,
+  Repository,
+  UpdateResult,
+} from 'typeorm';
 import { WashswotConnectionManager } from '../../../database/washswot-connection-manager';
 import { CreateUserDto, User } from '../../../database/entities/user';
 import { FindUserByCellPhoneNumberDto } from '../dto/find-user-by-cell-phone-number.dto';
@@ -43,8 +47,28 @@ export class UserRepository extends AbstractUserRepository {
     }
   }
 
+  async findUserByUUIDWithCondition(
+    findUserByUuidDto: FindUserByUuidDto,
+    option: FindOneOptions<User>,
+  ): Promise<User> {
+    const { uuid } = findUserByUuidDto;
+    try {
+      const result = await this.getRepository().findOne(
+        { uuid },
+        { ...option },
+      );
+      if (!result) {
+        throw new Error('not found');
+      }
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   public async findUserByUUID(
     findUserByUuidDto: FindUserByUuidDto,
+    option?: FindConditions<User>,
   ): Promise<User> {
     try {
       const { uuid } = findUserByUuidDto;

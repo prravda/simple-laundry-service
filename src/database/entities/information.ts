@@ -1,17 +1,18 @@
 import {
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Task } from './task';
-import { Address } from './address';
 import { Time } from './time';
+import { Address } from './address';
 
 export interface CreateInformationDto {
-  addressLineOne: string;
-  addressLineTwo: string;
   location: string;
 }
 
@@ -26,6 +27,23 @@ export class Information {
   @OneToOne((type) => Time, (time) => time.information, {
     cascade: true,
   })
-  @JoinColumn()
   time: Time;
+
+  @OneToOne((type) => Address, (address) => address.information, {
+    cascade: true,
+  })
+  @JoinColumn()
+  address: Address;
+
+  @Column()
+  location: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

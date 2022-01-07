@@ -4,10 +4,21 @@ import { CreateUserDto, User } from '../../../database/entities/user';
 import { FindUserByUuidDto } from '../dto/find-user-by-uuid.dto';
 import { FindUserByCellPhoneNumberDto } from '../dto/find-user-by-cell-phone-number.dto';
 import { AbstractUserRepository } from '../abstracts/abstract.user.repository';
+import { FindOneOptions } from 'typeorm';
 
 export class UserService extends AbstractUserService {
   constructor(private readonly userRepository: AbstractUserRepository) {
     super();
+  }
+
+  public async findUserByUUIDWithConditions(
+    findUserByUuidDto: FindUserByUuidDto,
+    option: FindOneOptions<User>,
+  ): Promise<User> {
+    return await this.userRepository.findUserByUUIDWithCondition(
+      findUserByUuidDto,
+      option,
+    );
   }
 
   private generateUUID(): string {

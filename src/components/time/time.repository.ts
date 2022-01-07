@@ -12,6 +12,10 @@ export class TimeRepository extends AbstractTimeRepository {
     return WashswotConnectionManager.getConnection().getRepository(Time);
   }
 
+  public createTime(createTimeDto: CreateTimeDto): Time {
+    return this.getRepository().create(createTimeDto);
+  }
+
   public async findTimeByTimeId(
     findTimeByTimeId: FindTimeByTimeId,
   ): Promise<Time> {

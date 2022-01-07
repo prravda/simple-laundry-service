@@ -1,4 +1,4 @@
-import { AbstractRepository, DeepPartial } from 'typeorm';
+import { AbstractRepository } from 'typeorm';
 import {
   CreateTimeDto,
   FindTimeByTimeId,
@@ -7,6 +7,7 @@ import {
 } from '../../../database/entities/time';
 
 export abstract class AbstractTimeRepository extends AbstractRepository<Time> {
+  abstract createTime(createTimeDto: CreateTimeDto): Time;
   abstract insertTime(createTimeDto: CreateTimeDto): Promise<Time>;
   abstract findTimeByTimeId(findTimeByTimeId: FindTimeByTimeId): Promise<Time>;
   abstract updateTimeByTimeId(

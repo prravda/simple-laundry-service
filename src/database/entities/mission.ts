@@ -1,9 +1,11 @@
 import {
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
-  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Item } from './item';
 import { Task } from './task';
@@ -22,4 +24,13 @@ export class Mission {
 
   @OneToOne((type) => Task, (task) => task.mission)
   task: Task;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

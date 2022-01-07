@@ -18,6 +18,16 @@ export class MockTimeRepository extends AbstractTimeRepository {
     return Promise.resolve(mockTimeEntity);
   }
 
+  createTime(createTimeDto: CreateTimeDto): Time {
+    const { pickup, pickupEnd, delivery, deliveryEnd } = createTimeDto;
+    const mockTimeEntity = new Time();
+    mockTimeEntity.pickup = pickup;
+    mockTimeEntity.pickupEnd = pickupEnd;
+    mockTimeEntity.delivery = delivery;
+    mockTimeEntity.deliveryEnd = deliveryEnd;
+    return mockTimeEntity;
+  }
+
   public async findTimeByTimeId(
     findTimeByTimeId: FindTimeByTimeId,
   ): Promise<Time> {

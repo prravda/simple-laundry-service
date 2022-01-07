@@ -6,7 +6,8 @@ import {
 } from '../../../database/entities/time';
 
 export abstract class AbstractTimeService extends AbstractService {
-  abstract createTime(createTimeDto: CreateTimeDto): Promise<Time>;
+  abstract createTime(createTimeDto: CreateTimeDto): Time;
+  abstract saveTime(createTimeDto: CreateTimeDto): Promise<Time>;
   abstract updateTimeByTimeId(
     updateTimeDto: UpdateTimeByTimeIdDto,
   ): Promise<Time>;

@@ -1,16 +1,23 @@
 import {
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { User } from './user';
-import { Task } from './task';
+import { Information } from './information';
 
 export interface CreateAddressDto {
   addressLineOne: string;
   addressLineTwo: string;
+}
+
+export interface FindAddressWithIdDto {
+  id: number;
 }
 
 @Entity()
@@ -27,6 +34,15 @@ export class Address {
   @ManyToOne(() => User, (user) => user.addresses)
   user: User;
 
-  @OneToOne((type) => Task, (task) => task.address)
-  task: Task;
+  @OneToOne((type) => Information, (information) => information.address)
+  information: Information;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }
