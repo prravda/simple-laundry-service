@@ -101,9 +101,19 @@ export class FacadeTaskService extends AbstractFacadeTaskService {
   ) {
     const missionEntity = new Mission();
     missionEntity.items = createItemListDto.map<Item>((dto) => {
-      const { createTagListDto, createImageListDto, ...creatItemDto } = dto;
+      const { createImageListDto, ...others } = dto;
+      const {
+        name,
+        message,
+        representativeItemImage,
+        ...stringArrayForTagList
+      } = others;
+      const createTagListDto =
+        stringArrayForTagList.createTagListDto.map<CreateTagDto>((strValue) => {
+          return { tagName: strValue };
+        });
       return this.createItemWithImagesAndTags(
-        creatItemDto,
+        { name, message, representativeItemImage } as CreateItemDto,
         createTagListDto,
         createImageListDto,
       );
@@ -143,7 +153,7 @@ export class FacadeTaskService extends AbstractFacadeTaskService {
       const taskEntity = await this.createAndSaveTask(taskInformation);
       const userEntity = await this.userService.findUserByUUIDWithConditions(
         { uuid },
-        {},
+        { relations: ['tasks'] },
       );
       userEntity.tasks.push(taskEntity);
       await this.userService.saveUser(userEntity);

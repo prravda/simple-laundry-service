@@ -20,7 +20,7 @@ export interface CreateItemDto {
 
 export interface CreateItemWithCreateImageListAndTagList extends CreateItemDto {
   createImageListDto: CreateImageDto[];
-  createTagListDto: CreateTagDto[];
+  createTagListDto: string[];
 }
 
 @Entity()
