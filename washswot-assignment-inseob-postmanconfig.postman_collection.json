@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "dd580119-38ae-4164-8eff-c49aec1155a9",
+		"name": "washswot-assignment-inseob-postmanconfig",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST /api/user",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"test-user\",\n  \"nickname\": \"test-nickname\",\n  \"cellPhoneNumber\": \"010-2222-3333\",\n  \"gender\": \"male\",\n  \"addressLineOne\": \"test-address-line-one\",\n  \"addressLineTwo\": \"test-address-line-two\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/me *credential needed",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiY2t5Njk5eDViMDAwMHBiaDk4c2g2ZDFrcyIsInRva2VuVHlwZSI6ImFjY2VzcyIsImlhdCI6MTY0MTY3MjI1NywiZXhwIjoxNjQxNzU4NjU3LCJhdWQiOiJ3YUBTaCFzdypvVF91U2VyIiwiaXNzIjoidzFhc19oc0BXbyZ0X2xhI0JzIn0.VYIXSDqhBsftBS_nMSo7JkKcIIKUlpongbcm1sIvU7E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/user/me",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/auth/renew *credential needed",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiY2t5Njk5eDViMDAwMHBiaDk4c2g2ZDFrcyIsInRva2VuVHlwZSI6ImFjY2VzcyIsImlhdCI6MTY0MTY3MjI1NywiZXhwIjoxNjQxNzU4NjU3LCJhdWQiOiJ3YUBTaCFzdypvVF91U2VyIiwiaXNzIjoidzFhc19oc0BXbyZ0X2xhI0JzIn0.VYIXSDqhBsftBS_nMSo7JkKcIIKUlpongbcm1sIvU7E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/auth/renew",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"renew"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/order *credential needed",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set('pickup', new Date('2022-01-07 15:00'));",
+							"pm.environment.set('pickupEnd', new Date('2022-01-07 18:00'));",
+							"pm.environment.set('delivery', new Date('2022-01-10 18:00'));",
+							"pm.environment.set('deliveryEnd', new Date('2022-01-10 20:00'));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiY2t5Njk5eDViMDAwMHBiaDk4c2g2ZDFrcyIsInRva2VuVHlwZSI6ImFjY2VzcyIsImlhdCI6MTY0MTY3MjI1NywiZXhwIjoxNjQxNzU4NjU3LCJhdWQiOiJ3YUBTaCFzdypvVF91U2VyIiwiaXNzIjoidzFhc19oc0BXbyZ0X2xhI0JzIn0.VYIXSDqhBsftBS_nMSo7JkKcIIKUlpongbcm1sIvU7E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"createInformationDto\": {\n        \"location\": \"test-location\"\n    },\n    \"createAddressDto\": {\n        \"addressLineOne\": \"test-address-line-one\",\n        \"addressLineTwo\": \"test-address-line-two\"\n    },\n    \"createTimeDto\": {\n        \"pickup\": \"{{pickup}}\",\n        \"pickupEnd\": \"{{pickupEnd}}\",\n        \"delivery\": \"{{delivery}}\",\n        \"deliveryEnd\": \"{{deliveryEnd}}\"\n    },\n    \"createMissionDto\": {},\n    \"createItemListWithImageListAndTagListDto\": [\n        { \n            \"name\": \"에어포스 X 칼하트 신발\", \n            \"message\": \"전반적으로 깨끗하게 해주시고, 눈에 보이는 얼룩들은 꼭 제거 해주세요\", \n            \"representativeItemImage\": \"http://mock.image.address.com\",\n            \"createImageListDto\": [ \n                {\"imageId\": \"1\", \"imageUrl\": \"http://mock.image.address.com\" },\n                {\"imageId\": \"2\", \"imageUrl\": \"http://mock.image.address.com\" }\n            ],\n            \"createTagListDto\": [\n                \"신발\",\n                \"신발 세탁\",\n                \"얼룩 제거\"\n            ]\n        },\n        { \n            \"name\": \"베이프 반팔\", \n            \"message\": \"옷감이랑 프린팅에 최대한 손상 안가게 세탁 부탁드립니다.\", \n            \"representativeItemImage\": \"http://mock.image.address.com\",\n            \"createImageListDto\": [ \n                {\"imageId\": \"1\", \"imageUrl\": \"http://mock.image.address.com\" },\n                {\"imageId\": \"2\", \"imageUrl\": \"http://mock.image.address.com\" }\n            ],\n            \"createTagListDto\": [\n                \"반팔\",\n                \"세탁\",\n                \"손상\"\n            ]\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/order",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/order/my *credential needed",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiY2t5Njk5eDViMDAwMHBiaDk4c2g2ZDFrcyIsInRva2VuVHlwZSI6ImFjY2VzcyIsImlhdCI6MTY0MTY3MjI1NywiZXhwIjoxNjQxNzU4NjU3LCJhdWQiOiJ3YUBTaCFzdypvVF91U2VyIiwiaXNzIjoidzFhc19oc0BXbyZ0X2xhI0JzIn0.VYIXSDqhBsftBS_nMSo7JkKcIIKUlpongbcm1sIvU7E",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/order/my",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"order",
+						"my"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/order/:taskId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiY2t5NDE2YTduMDAwMHczaDkxd2wwZWtuYiIsInRva2VuVHlwZSI6ImFjY2VzcyIsImlhdCI6MTY0MTUzNzcxOCwiZXhwIjoxNjQxNjI0MTE4LCJhdWQiOiJ3YUBTaCFzdypvVF91U2VyIiwiaXNzIjoidzFhc19oc0BXbyZ0X2xhI0JzIn0.WENYxQTFi_Win7w9k_vNB1JjRJInzD9OXZj35ft21a0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/order/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"order",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /api/order/:taskId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiY2t5NDE2YTduMDAwMHczaDkxd2wwZWtuYiIsInRva2VuVHlwZSI6ImFjY2VzcyIsImlhdCI6MTY0MTUzNzcxOCwiZXhwIjoxNjQxNjI0MTE4LCJhdWQiOiJ3YUBTaCFzdypvVF91U2VyIiwiaXNzIjoidzFhc19oc0BXbyZ0X2xhI0JzIn0.WENYxQTFi_Win7w9k_vNB1JjRJInzD9OXZj35ft21a0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/order/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"order",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
