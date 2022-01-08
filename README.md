@@ -254,7 +254,22 @@ error -> respone 처리과정은 해당 exception filter middleware 에 의해�
     "solution": "Check your task id's validity before retry to find a task again"
 }
 ```
-error response 의 예시는 다음과 같습니다. 
+error response 의 예시는 다음과 같고
+
+```shell
+CanNotFindATaskWithThisTaskIdError: There is no task with this task id
+    at FacadeTaskService.<anonymous> (/Users/pravda/Development/nodejs-test/dist/components/task/facade.task.service.js:160:27)
+    at Generator.throw (<anonymous>)
+    at rejected (/Users/pravda/Development/nodejs-test/dist/components/task/facade.task.service.js:6:65)
+    at processTicksAndRejections (internal/process/task_queues.js:95:5) {
+  _name: 'CanNotFindATaskWithThisTaskIdError',
+  _message: 'There is no task with this task id',
+  _statusCode: 404,
+  _action: 'Find a task with invalid task id',
+  _solution: "Check your task id's validity before retry to find a task again"
+}
+```
+error logging 은 debugging 을 할 때 드는 시간을 줄이기 위하여, `console.error(err.stack)` 을 이용하여 어느 부분에서 에러가 발생하고, 전파되었는지를 로그로 남겼습니다.
 
 
 ---
