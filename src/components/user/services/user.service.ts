@@ -5,6 +5,8 @@ import { FindUserByUuidDto } from '../dto/find-user-by-uuid.dto';
 import { FindUserByCellPhoneNumberDto } from '../dto/find-user-by-cell-phone-number.dto';
 import { AbstractUserRepository } from '../abstracts/abstract.user.repository';
 import { FindOneOptions } from 'typeorm';
+import { CanNotFindUserWithThisUuidError } from '../errors/can-not-find-user-with-this-uuid-error';
+import { CanNotFindUserWithThisCellPhoneNumberError } from '../errors/can-not-find-user-with-this-cell-phone-number-error';
 
 export class UserService extends AbstractUserService {
   constructor(private readonly userRepository: AbstractUserRepository) {
@@ -15,10 +17,20 @@ export class UserService extends AbstractUserService {
     findUserByUuidDto: FindUserByUuidDto,
     option: FindOneOptions<User>,
   ): Promise<User> {
-    return await this.userRepository.findUserByUUIDWithCondition(
-      findUserByUuidDto,
-      option,
-    );
+    try {
+      return await this.userRepository.findUserByUUIDWithCondition(
+        findUserByUuidDto,
+        option,
+      );
+    } catch (e) {
+      throw new CanNotFindUserWithThisUuidError({
+        name: 'CanNotFindUserWithThisUuidError',
+        message: `Can't find user with this UUID`,
+        statusCode: 404,
+        action: `You try to find a user with an invalid uuid`,
+        solution: `Check your uuid again`,
+      });
+    }
   }
 
   private generateUUID(): string {
@@ -39,7 +51,13 @@ export class UserService extends AbstractUserService {
       const { uuid } = findUserByUuidDto;
       const result = await this.userRepository.findUserByUUID({ uuid });
       if (result === undefined) {
-        throw new Error('존재하지 않는 사용자입니다.');
+        throw new CanNotFindUserWithThisUuidError({
+          name: 'CanNotFindUserWithThisUuidError',
+          message: `Can't find user with this UUID`,
+          statusCode: 404,
+          action: `You try to find a user with an invalid uuid`,
+          solution: `Check your uuid again`,
+        });
       }
       return result;
     } catch (e) {
@@ -56,7 +74,13 @@ export class UserService extends AbstractUserService {
         cellPhoneNumber,
       });
       if (result === undefined) {
-        throw new Error('존재하지 않는 사용자입니다.');
+        throw new CanNotFindUserWithThisCellPhoneNumberError({
+          name: 'CanNotFindUserWithThisCellPhoneNumberError',
+          message: `Can't find user with this cell phone number`,
+          statusCode: 404,
+          action: `You try to find a user with an invalid cell phone number`,
+          solution: `Check the cell phone number again`,
+        });
       }
       return result;
     } catch (e) {
@@ -65,6 +89,10 @@ export class UserService extends AbstractUserService {
   }
 
   public async saveUser(user: User) {
-    return await this.userRepository.saveUser(user);
+    try {
+      return await this.userRepository.saveUser(user);
+    } catch (e) {
+      throw e;
+    }
   }
 }

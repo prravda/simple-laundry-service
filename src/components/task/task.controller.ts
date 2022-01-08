@@ -1,5 +1,5 @@
 import { AbstractTaskController } from './abstracts/abstract.task.controller';
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import passport from 'passport';
 import { WashSwotStrategy } from '../auth/strategies/wash-swot-strategy';
 import { AbstractFacadeTaskService } from './abstracts/abstract.facade.task.service';
@@ -11,6 +11,7 @@ import { FindTaskByTaskIdDto } from './dto/find-task-by-task-id.dto';
 import { FindTaskByUuidDto } from './dto/find-task-by-uuid.dto';
 import { successResponseWrapper } from '../../middlewares/response-wrappers/success-response.wrapper';
 import { UpdateResult } from 'typeorm';
+import { CanNotFindATaskWithThisTaskIdError } from './errors/can-not-find-a-task-with-this-task-id-error';
 
 export class TaskController extends AbstractTaskController {
   private readonly taskRouter;
@@ -53,38 +54,56 @@ export class TaskController extends AbstractTaskController {
       },
     );
 
-    router.get('/:taskId', async (req: Request, res: Response) => {
-      const { taskId } = req.params;
-      const taskIdCastedToNumberType = parseInt(taskId);
-      const result = await this.taskService.findTaskByTaskId({
-        taskId: taskIdCastedToNumberType,
-      } as FindTaskByTaskIdDto);
-      res.status(201).send(
-        successResponseWrapper<Task>({
-          message: `Success getting a task with a specific task id`,
-          statusCode: res.statusCode,
-          data: result,
-        }),
-      );
-    });
+    router.get(
+      '/:taskId',
+      async (req: Request, res: Response, next: NextFunction) => {
+        try {
+          const { taskId } = req.params;
+          const taskIdCastedToNumberType = parseInt(taskId);
+          const result = await this.taskService.findTaskByTaskId({
+            taskId: taskIdCastedToNumberType,
+          } as FindTaskByTaskIdDto);
+          res.status(201).send(
+            successResponseWrapper<Task>({
+              message: `Success getting a task with a specific task id`,
+              statusCode: res.statusCode,
+              data: result,
+            }),
+          );
+        } catch (e) {
+          next(e);
+        }
+      },
+    );
 
     router.post(
       '/',
       passport.authenticate(WashSwotStrategy, { session: false }),
       async (req: Request, res: Response) => {
-        const { uuid } = req.user as AuthorizedUserInterface;
-        const createAndSaveTaskDto = req.body as CreateAndSaveTaskDto;
-        const result = await this.taskService.createTaskByUUID({
-          uuid,
-          taskInformation: createAndSaveTaskDto,
-        } as CreateTaskByUuidDto);
-        res.status(201).send(
-          successResponseWrapper<Task>({
-            message: `Success creating a task.`,
-            statusCode: res.statusCode,
-            data: result,
-          }),
-        );
+        try {
+          const { uuid } = req.user as AuthorizedUserInterface;
+          const createAndSaveTaskDto = req.body as CreateAndSaveTaskDto;
+          const result = await this.taskService.createTaskByUUID({
+            uuid,
+            taskInformation: createAndSaveTaskDto,
+          } as CreateTaskByUuidDto);
+          res.status(201).send(
+            successResponseWrapper<Task>({
+              message: `Success creating a task.`,
+              statusCode: res.statusCode,
+              data: result,
+            }),
+          );
+        } catch (e) {
+          if (e instanceof CanNotFindATaskWithThisTaskIdError) {
+            res.status(e.statusCode).send({
+              statusCode: e.statusCode,
+              message: e.message,
+              action: e.action,
+              solution: e.solution,
+            });
+          }
+        }
       },
     );
 
@@ -102,7 +121,6 @@ export class TaskController extends AbstractTaskController {
         }),
       );
     });
-
     this.taskRouter.use(path, router);
   }
 

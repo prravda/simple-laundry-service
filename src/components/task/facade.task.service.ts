@@ -25,6 +25,7 @@ import { DeleteTaskByTaskIdDto } from './dto/delete-task-by-task-id.dto';
 import { FindTaskByTaskIdDto } from './dto/find-task-by-task-id.dto';
 import { FindTaskByUuidDto } from './dto/find-task-by-uuid.dto';
 import { UpdateResult } from 'typeorm';
+import { CanNotFindATaskWithThisTaskIdError } from './errors/can-not-find-a-task-with-this-task-id-error';
 
 export class FacadeTaskService extends AbstractFacadeTaskService {
   constructor(
@@ -186,18 +187,28 @@ export class FacadeTaskService extends AbstractFacadeTaskService {
     findTaskByTaskIdDto: FindTaskByTaskIdDto,
   ): Promise<Task> {
     try {
-      const { taskId } = findTaskByTaskIdDto;
-      return await this.taskService.findOne({
-        where: { id: taskId },
-        relations: [
-          'information',
-          'information.time',
-          'mission',
-          'mission.items',
-          'mission.items.images',
-          'mission.items.tagList',
-        ],
-      });
+      try {
+        const { taskId } = findTaskByTaskIdDto;
+        return await this.taskService.findOne({
+          where: { id: taskId },
+          relations: [
+            'information',
+            'information.time',
+            'mission',
+            'mission.items',
+            'mission.items.images',
+            'mission.items.tagList',
+          ],
+        });
+      } catch (e) {
+        throw new CanNotFindATaskWithThisTaskIdError({
+          name: 'CanNotFindATaskWithThisTaskIdError',
+          message: `There is no task with this task id`,
+          statusCode: 404,
+          action: `Find a task with invalid task id`,
+          solution: `Check your task id's validity before retry to find a task again`,
+        });
+      }
     } catch (e) {
       throw e;
     }

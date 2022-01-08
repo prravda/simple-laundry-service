@@ -22,18 +22,22 @@ export class UserController extends AbstractUserController {
     const path = '/user';
 
     router.post('/', async (req, res) => {
-      const createUserDtoWithAddressInformation = req.body as CreateUserDto &
-        CreateAddressDto;
-      const result = await this.userService.insertUser(
-        createUserDtoWithAddressInformation,
-      );
-      res.status(201).send(
-        successResponseWrapper<AccessAndRefreshTokenInterface>({
-          message: 'success signing up',
-          statusCode: res.statusCode,
-          data: result,
-        }),
-      );
+      try {
+        const createUserDtoWithAddressInformation = req.body as CreateUserDto &
+          CreateAddressDto;
+        const result = await this.userService.insertUser(
+          createUserDtoWithAddressInformation,
+        );
+        res.status(201).send(
+          successResponseWrapper<AccessAndRefreshTokenInterface>({
+            message: 'success signing up',
+            statusCode: res.statusCode,
+            data: result,
+          }),
+        );
+      } catch (e) {
+        throw e;
+      }
     });
 
     router.get(
