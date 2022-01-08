@@ -4,6 +4,8 @@ import passport from 'passport';
 import { WashSwotStrategy } from './strategies/wash-swot-strategy';
 import { AuthorizedUserInterface } from './interface/authorized-user.interface';
 import { AbstractFacadeAuthService } from './abstracts/abstract.facade.auth.service';
+import { successResponseWrapper } from '../../middlewares/response-wrappers/success-response.wrapper';
+import { AccessAndRefreshTokenInterface } from './interface/access-and-refresh-token.interface';
 
 export class AuthController extends AbstractAuthController {
   private readonly authRouter;
@@ -23,7 +25,13 @@ export class AuthController extends AbstractAuthController {
         const result = await this.facadeAuthService.updateCredentialByUUID({
           uuid,
         });
-        res.send(result);
+        res.status(201).send(
+          successResponseWrapper<AccessAndRefreshTokenInterface>({
+            message: 'Success renewing the token pair',
+            statusCode: res.statusCode,
+            data: result,
+          }),
+        );
       },
     );
 

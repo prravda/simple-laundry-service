@@ -141,7 +141,9 @@ export class FacadeTaskService extends AbstractFacadeTaskService {
     const taskEntity = this.taskService.create();
     taskEntity.information = informationEntity;
     taskEntity.mission = missionEntity;
-    return await this.taskService.save(taskEntity);
+    const result = await this.taskService.save(taskEntity);
+    console.log(result);
+    return result;
   }
 
   // ---------------- describe public method  ----------------
@@ -156,8 +158,8 @@ export class FacadeTaskService extends AbstractFacadeTaskService {
         { relations: ['tasks'] },
       );
       userEntity.tasks.push(taskEntity);
-      await this.userService.saveUser(userEntity);
-      return taskEntity;
+      const userWithTaskEntity = await this.userService.saveUser(userEntity);
+      return userWithTaskEntity.tasks[userWithTaskEntity.tasks.length - 1];
     } catch (e) {
       throw e;
     }
@@ -188,13 +190,12 @@ export class FacadeTaskService extends AbstractFacadeTaskService {
       return await this.taskService.findOne({
         where: { id: taskId },
         relations: [
-          'tasks',
-          'tasks.information',
-          'tasks.information.time',
-          'tasks.mission',
-          'tasks.mission.items',
-          'tasks.mission.items.images',
-          'tasks.mission.items.tagList',
+          'information',
+          'information.time',
+          'mission',
+          'mission.items',
+          'mission.items.images',
+          'mission.items.tagList',
         ],
       });
     } catch (e) {
@@ -208,15 +209,33 @@ export class FacadeTaskService extends AbstractFacadeTaskService {
     const { uuid } = findTaskByUuidDto;
     const { tasks } = await this.userService.findUserByUUIDWithConditions(
       { uuid },
-      { relations: ['tasks'] },
+      {
+        relations: [
+          'tasks',
+          'tasks.information',
+          'tasks.information.time',
+          'tasks.mission',
+          'tasks.mission.items',
+          'tasks.mission.items.images',
+          'tasks.mission.items.tagList',
+        ],
+      },
     );
     return tasks;
   }
 
-  public deleteTaskByTaskId(
+  public async deleteTaskByTaskId(
     deleteTaskByTaskIdDto: DeleteTaskByTaskIdDto,
   ): Promise<UpdateResult> {
-    const { taskId } = deleteTaskByTaskIdDto;
-    return this.taskService.softDelete({ id: taskId });
+    try {
+      const { taskId } = deleteTaskByTaskIdDto;
+      const result = await this.taskService.softDelete({ id: taskId });
+      if (result.affected && result.affected >= 1) {
+        return result;
+      }
+      throw new Error('there is no task with this id');
+    } catch (e) {
+      throw e;
+    }
   }
 }

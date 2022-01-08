@@ -1,11 +1,13 @@
 import { AbstractUserController } from './abstracts/abstract.user.controller';
 import { Router } from 'express';
-import { CreateUserDto } from '../../database/entities/user';
+import { CreateUserDto, User } from '../../database/entities/user';
 import { AbstractFacadeUserService } from './abstracts/abstract.facade.user.service';
 import { CreateAddressDto } from '../../database/entities/address';
 import passport from 'passport';
 import { WashSwotStrategy } from '../auth/strategies/wash-swot-strategy';
 import { AuthorizedUserInterface } from '../auth/interface/authorized-user.interface';
+import { successResponseWrapper } from '../../middlewares/response-wrappers/success-response.wrapper';
+import { AccessAndRefreshTokenInterface } from '../auth/interface/access-and-refresh-token.interface';
 
 export class UserController extends AbstractUserController {
   private readonly userRouter;
@@ -25,7 +27,13 @@ export class UserController extends AbstractUserController {
       const result = await this.userService.insertUser(
         createUserDtoWithAddressInformation,
       );
-      res.send(result);
+      res.status(201).send(
+        successResponseWrapper<AccessAndRefreshTokenInterface>({
+          message: 'success signing up',
+          statusCode: res.statusCode,
+          data: result,
+        }),
+      );
     });
 
     router.get(
@@ -34,7 +42,13 @@ export class UserController extends AbstractUserController {
       async (req, res) => {
         const { uuid } = req.user as AuthorizedUserInterface;
         const user = await this.userService.findUserByUUID({ uuid });
-        res.send(user);
+        res.status(200).send(
+          successResponseWrapper<User>({
+            message: `success getting an user's information`,
+            statusCode: res.statusCode,
+            data: user,
+          }),
+        );
       },
     );
 

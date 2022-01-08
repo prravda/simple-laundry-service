@@ -4,11 +4,13 @@ import passport from 'passport';
 import { WashSwotStrategy } from '../auth/strategies/wash-swot-strategy';
 import { AbstractFacadeTaskService } from './abstracts/abstract.facade.task.service';
 import { AuthorizedUserInterface } from '../auth/interface/authorized-user.interface';
-import { CreateAndSaveTaskDto } from '../../database/entities/task';
+import { CreateAndSaveTaskDto, Task } from '../../database/entities/task';
 import { CreateTaskByUuidDto } from './dto/create-task-by-uuid.dto';
 import { DeleteTaskByTaskIdDto } from './dto/delete-task-by-task-id.dto';
 import { FindTaskByTaskIdDto } from './dto/find-task-by-task-id.dto';
 import { FindTaskByUuidDto } from './dto/find-task-by-uuid.dto';
+import { successResponseWrapper } from '../../middlewares/response-wrappers/success-response.wrapper';
+import { UpdateResult } from 'typeorm';
 
 export class TaskController extends AbstractTaskController {
   private readonly taskRouter;
@@ -24,7 +26,13 @@ export class TaskController extends AbstractTaskController {
 
     router.get('/', async (req: Request, res: Response) => {
       const result = await this.taskService.findAllTask();
-      res.send(result);
+      res.status(200).send(
+        successResponseWrapper<Task[]>({
+          message: `Success getting all tasks.`,
+          statusCode: res.statusCode,
+          data: result,
+        }),
+      );
     });
 
     router.get(
@@ -35,7 +43,13 @@ export class TaskController extends AbstractTaskController {
         const result = await this.taskService.findTaskByUUID({
           uuid,
         } as FindTaskByUuidDto);
-        res.send(result);
+        res.status(201).send(
+          successResponseWrapper<Task[]>({
+            message: `Success getting a user's all tasks.`,
+            statusCode: res.statusCode,
+            data: result,
+          }),
+        );
       },
     );
 
@@ -45,7 +59,13 @@ export class TaskController extends AbstractTaskController {
       const result = await this.taskService.findTaskByTaskId({
         taskId: taskIdCastedToNumberType,
       } as FindTaskByTaskIdDto);
-      res.send(result);
+      res.status(201).send(
+        successResponseWrapper<Task>({
+          message: `Success getting a task with a specific task id`,
+          statusCode: res.statusCode,
+          data: result,
+        }),
+      );
     });
 
     router.post(
@@ -58,7 +78,13 @@ export class TaskController extends AbstractTaskController {
           uuid,
           taskInformation: createAndSaveTaskDto,
         } as CreateTaskByUuidDto);
-        res.send(result);
+        res.status(201).send(
+          successResponseWrapper<Task>({
+            message: `Success creating a task.`,
+            statusCode: res.statusCode,
+            data: result,
+          }),
+        );
       },
     );
 
@@ -68,7 +94,13 @@ export class TaskController extends AbstractTaskController {
       const result = await this.taskService.deleteTaskByTaskId({
         taskId: taskIdCastedToNumberType,
       } as DeleteTaskByTaskIdDto);
-      res.send(result);
+      res.status(201).send(
+        successResponseWrapper<UpdateResult>({
+          message: `Success deleting a task with a specific task id`,
+          statusCode: res.statusCode,
+          data: result,
+        }),
+      );
     });
 
     this.taskRouter.use(path, router);
