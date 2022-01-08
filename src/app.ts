@@ -7,6 +7,7 @@ export class App {
   private application;
   constructor(private components: AbstractComponent[]) {
     this.application = express();
+    this.application.use(express.urlencoded({ extended: false }));
     this.application.use(express.json());
     this.initializeComponents();
     this.initializeExceptionFilter();

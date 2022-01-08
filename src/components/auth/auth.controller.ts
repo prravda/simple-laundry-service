@@ -6,7 +6,6 @@ import { AuthorizedUserInterface } from './interface/authorized-user.interface';
 import { AbstractFacadeAuthService } from './abstracts/abstract.facade.auth.service';
 import { successResponseWrapper } from '../../middlewares/response-wrappers/success-response.wrapper';
 import { AccessAndRefreshTokenInterface } from './interface/access-and-refresh-token.interface';
-
 export class AuthController extends AbstractAuthController {
   private readonly authRouter;
   constructor(private readonly facadeAuthService: AbstractFacadeAuthService) {
@@ -17,6 +16,7 @@ export class AuthController extends AbstractAuthController {
   public initializeRouter() {
     const router = Router();
     const path = '/auth';
+
     router.get(
       '/renew',
       passport.authenticate(WashSwotStrategy, { session: false }),

@@ -42,7 +42,9 @@ export class UserController extends AbstractUserController {
 
     router.get(
       '/me',
-      passport.authenticate(WashSwotStrategy, { session: false }),
+      passport.authenticate(WashSwotStrategy, {
+        session: false,
+      }),
       async (req, res) => {
         const { uuid } = req.user as AuthorizedUserInterface;
         const user = await this.userService.findUserByUUID({ uuid });

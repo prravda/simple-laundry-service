@@ -12,12 +12,20 @@ export class AddressService extends AbstractAddressService {
   }
 
   public createAddress(createAddressDto: CreateAddressDto): Address {
-    return this.addressRepository.createAddress(createAddressDto);
+    try {
+      return this.addressRepository.createAddress(createAddressDto);
+    } catch (e) {
+      throw e;
+    }
   }
 
   async findAddressWithId(
     findAddressWithIdDto: FindAddressWithIdDto,
   ): Promise<Address> {
-    return await this.addressRepository.findAddressById(findAddressWithIdDto);
+    try {
+      return await this.addressRepository.findAddressById(findAddressWithIdDto);
+    } catch (e) {
+      throw e;
+    }
   }
 }
