@@ -1,13 +1,16 @@
 import express, { Router } from 'express';
 import { getConfig } from './config';
 import { AbstractComponent } from './constants/abstracts/abstract.component';
+import { exceptionFilter } from './middlewares/exception-filter';
 
 export class App {
   private application;
   constructor(private components: AbstractComponent[]) {
     this.application = express();
+    this.application.use(express.urlencoded({ extended: false }));
     this.application.use(express.json());
     this.initializeComponents();
+    this.initializeExceptionFilter();
   }
 
   public listen() {
@@ -15,6 +18,10 @@ export class App {
     this.application.listen(port, () => {
       console.log(`Example app listening at http://localhost:${port}`);
     });
+  }
+
+  private initializeExceptionFilter() {
+    this.application.use(exceptionFilter);
   }
 
   private initializeComponents() {

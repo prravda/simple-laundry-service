@@ -12,10 +12,18 @@ export class AddressRepository extends AbstractAddressRepository {
     super();
   }
   private getRepository(): Repository<Address> {
-    return WashswotConnectionManager.getConnection().getRepository(Address);
+    try {
+      return WashswotConnectionManager.getConnection().getRepository(Address);
+    } catch (e) {
+      throw e;
+    }
   }
   public createAddress(createAddressDto: CreateAddressDto): Address {
-    return this.getRepository().create(createAddressDto);
+    try {
+      return this.getRepository().create(createAddressDto);
+    } catch (e) {
+      throw e;
+    }
   }
 
   public async findAddressById(
