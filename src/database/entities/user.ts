@@ -24,7 +24,10 @@ export interface CreateUserDto {
 
 @Entity()
 export class User {
-  @PrimaryColumn()
+  @PrimaryColumn({
+    primary: true,
+    name: 'uuid',
+  })
   uuid: string;
 
   @Column()
