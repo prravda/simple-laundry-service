@@ -78,14 +78,42 @@ export const signing = (UUID) => sign({ UUID });
 먼저 `X-` prefix 가 붙는 custom header 의 사용을 지양하기로 하였다. MDN 의 문서에도 나와있듯, custom header 를 사용할 땐 이런 convention 을 사용하였으나, 2012 년에 규격을 벗어나게 한다는 이유로 IANA 나 RFC 등에 의해 지양되고 있다.  그래서 [Authorization](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization) 이라는 header 에 JWT 를 담아 보내기로 하였다.
 
 ### Simplify the authorization process with passport
+**Custom Strategy of passport-jwt**
+```tsx
+const userServiceForValidation = new UserService(new UserRepository());
+export const WashSwotStrategy = new Strategy(
+  {
+    secretOrKey: getConfig().jwtSecret,
+    issuer: getConfig().jwtIssuer,
+    audience: getConfig().jwtAudience,
+    algorithms: [getConfig().jwtAlgorithm],
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  },
+  async (jwtPayload: WashswotJwtInterface, done) => {
+    const { uuid } = jwtPayload;
+    const user = await userServiceForValidation.findUserByUUID({ uuid });
+    // case: find a user with a valid credential
+    if (user) {
+      return done(null, { uuid });
+    }
+    // case: else (invalid credential, valid credential but cannot find user with it)
+    return done(unauthorizedErrorInstance, false, {
+      ...unauthorizedErrorProps,
+    });
+  },
+);
+```
+custom passport strategy 를 정의한 코드.
 
-두 번째로는 인증/인가 라이브러리인 `[passport](http://www.passportjs.org/packages/passport-jwt/)` 사용이다. 그 중에서도 `jsonwebtoken` 을 사용하는 만큼, `passport-jwt` 를 사용하고자 한다. 그 이유는 코드베이스의 간략함 때문이다. authentication 과정에서 다양한 경우를 처리하지 않는다는 가정 하에, 별 다른 처리 없이 사용자의 authentication 만을 진행할 거라면 코드의 양을 일단은 줄여보자는 생각이 들었다. 코드가 적어질 수록, 버그도 적어지기에, 꼭 필요한 게 아니라면 신뢰도가 높은 라이브러리 등으로 코드를 줄이자는 주의이기에 passport 를 사용하기로 했다.
+두 번째로는 인증/인가 라이브러리인 [passport](http://www.passportjs.org/packages/passport-jwt/) 사용이다. 그 중에서도 `jsonwebtoken` 을 사용하는 만큼, `passport-jwt` 를 사용하고자 한다. 그 이유는 코드베이스의 간략함 때문이다. authentication 과정에서 다양한 경우를 처리하지 않는다는 가정 하에, 별 다른 처리 없이 사용자의 authentication 만을 진행할 거라면 코드의 양을 일단은 줄여보자는 생각이 들었다. 코드가 적어질 수록, 버그도 적어지기에, 꼭 필요한 게 아니라면 신뢰도가 높은 라이브러리 등으로 코드를 줄이자는 주의이기에 passport 를 사용하기로 했다.
+
+  
 
 ## Token strategy and design for authorization
 
 그 다음에는 authorization 에 사용할 token 에 대해서 전략을 세워보려고 한다.
 
-### **refresh token and access token**
+### refresh token and access token
 
 먼저 token 을 access token 과 refresh token 두 개로 나누어 발급하기로 하였다. 그렇게 하기로 한 이유는 두 개이다. 사용자의 편의성과 보안.
 
@@ -104,15 +132,15 @@ refresh token 은 access token 을 갱신할 수 있게 해주는, access token 
 
 ![jwt-web-debugger.png](./daily-development-logs/2022-01-05/assets/jwt-web-debugger.png)
 
-###Algorithm
+### Algorithm
 
 먼저 암호화 알고리즘이다. github repository 의 코드에서 `HS256` 알고리즘을 이용하는 건 계속해서 이용하기로 했다. 왜냐하면, 나머지 알고리즘들도 있긴 하지만, 일단은 가장 무난하기도 하고, 더 좋은 알고리즘이 있지만, 해당 알고리즘은 client 와도 협력이 필요한 부분이 있기 때문이다.
 
-###Properties
+### Properties
 
 `audience` 와 `issuer` property 를 추가하였다. `audience` 는 누가 해당 token 을 사용하는지, `issuer` 는 누가 이 token 을 발급했는지에 대한 정보를 담는 property 이다.
 
-###ExpiresAt
+### ExpiresAt
 
 그 다음으로는 만료 주기이다. 일단은 access token 은 1일, refresh token 은 3일을 주었다. 이렇게 설정한 경우, 사용자는 만료된 refresh token 을 갱신하기 위해서 3일마다 재 로그인을 해야한다. 물론 이는 회사의 사용자 정책에 따라서 달라질 수 있는 부분이고, 나도 아직 경험이 부족한 탓에 어느정도의 주기가 사용자의 경험을 최대한 해치지 않는 선에서 사용자의 보안을 지켜낼 수 있는 지점인지는 잘 모르겠다. 그러나, 만료일은 가급적 짧으면 짧을수록 좋다는 생각에 일단은 이런 식으로 setup 을 하였다.
 
