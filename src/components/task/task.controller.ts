@@ -1,7 +1,7 @@
 import { AbstractTaskController } from './abstracts/abstract.task.controller';
 import { NextFunction, Request, Response, Router } from 'express';
 import passport from 'passport';
-import { WashSwotStrategy } from '../auth/strategies/wash-swot-strategy';
+import { WashSwatStrategy } from '../auth/strategies/wash-swat-strategy';
 import { AbstractFacadeTaskService } from './abstracts/abstract.facade.task.service';
 import { AuthorizedUserInterface } from '../auth/interface/authorized-user.interface';
 import { CreateAndSaveTaskDto, Task } from '../../database/entities/task';
@@ -38,7 +38,7 @@ export class TaskController extends AbstractTaskController {
 
     router.get(
       '/my',
-      passport.authenticate(WashSwotStrategy, { session: false }),
+      passport.authenticate(WashSwatStrategy, { session: false }),
       async (req: Request, res: Response) => {
         const { uuid } = req.user as AuthorizedUserInterface;
         const result = await this.taskService.findTaskByUUID({
@@ -78,7 +78,7 @@ export class TaskController extends AbstractTaskController {
 
     router.post(
       '/',
-      passport.authenticate(WashSwotStrategy, { session: false }),
+      passport.authenticate(WashSwatStrategy, { session: false }),
       async (req: Request, res: Response) => {
         try {
           const { uuid } = req.user as AuthorizedUserInterface;

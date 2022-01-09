@@ -5,7 +5,7 @@ import {
   Repository,
   UpdateResult,
 } from 'typeorm';
-import { WashswotConnectionManager } from '../../../database/washswot-connection-manager';
+import { WashswatConnectionManager } from '../../../database/washswat-connection-manager';
 import { CreateUserDto, User } from '../../../database/entities/user';
 import { FindUserByCellPhoneNumberDto } from '../dto/find-user-by-cell-phone-number.dto';
 import { FindUserByUuidDto } from '../dto/find-user-by-uuid.dto';
@@ -17,7 +17,7 @@ export class UserRepository extends AbstractUserRepository {
   }
 
   private getRepository(): Repository<User> {
-    return WashswotConnectionManager.getConnection().getRepository(User);
+    return WashswatConnectionManager.getConnection().getRepository(User);
   }
 
   public createUser(createUserDto: CreateUserDto): User {

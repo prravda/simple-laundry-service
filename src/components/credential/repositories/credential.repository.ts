@@ -4,7 +4,7 @@ import {
   Credential,
 } from '../../../database/entities/credential';
 import { Repository } from 'typeorm';
-import { WashswotConnectionManager } from '../../../database/washswot-connection-manager';
+import { WashswatConnectionManager } from '../../../database/washswat-connection-manager';
 import { UpdateCredentialByUuidDto } from '../dto/update-credential-by-uuid.dto';
 import { User } from '../../../database/entities/user';
 
@@ -13,7 +13,7 @@ export class CredentialRepository extends AbstractCredentialRepository {
     super();
   }
   private getRepository(): Repository<Credential> {
-    return WashswotConnectionManager.getConnection().getRepository(Credential);
+    return WashswatConnectionManager.getConnection().getRepository(Credential);
   }
 
   public createCredential(
@@ -28,7 +28,7 @@ export class CredentialRepository extends AbstractCredentialRepository {
     try {
       const { uuid, refreshToken } = updateCredentialByUuidDto;
       const tempUserRepository =
-        WashswotConnectionManager.getConnection().getRepository(User);
+        WashswatConnectionManager.getConnection().getRepository(User);
       const userToUpdateWithCredentialInformation =
         await tempUserRepository.findOne(
           { uuid },

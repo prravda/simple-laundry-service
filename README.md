@@ -598,7 +598,7 @@ refresh token 은 access token 을 갱신할 수 있게 해주는, access token 
 
 전체적으로는 `data transfer object` 를 통한 request body formatting 을 진행하였습니다. 원래대로라면 API Documentation 을 `Swagger` 나 `postman platform` 을 통해 문서화를 주로 하는 편이었습니다만, 이번엔 시간상의 이유, 그리고 과제라는 특성상 외부 노출이 어려운 점을 고려하여 API call testing 을 하는 데 주로 사용하는 `POSTMAN` 의 request configuration file 을 전달드립니다. 해당 파일을 postman 에 import 하여 request example 들을 확인하실 수 있고, API call 을 진행하실 수 있습니다.
 
-파일 이름은 [washswot-assignment-inseob-postmanconfig.postman_collection.json](./washswot-assignment-inseob-postmanconfig.postman_collection.json) 입니다.
+파일 이름은 [washswat-assignment-inseob-postmanconfig.postman_collection.json](./washswat-assignment-inseob-postmanconfig.postman_collection.json) 입니다.
 
 # Response format
 

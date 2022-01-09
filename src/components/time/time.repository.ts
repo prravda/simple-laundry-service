@@ -1,5 +1,5 @@
 import { AbstractTimeRepository } from './abstracts/abstract.time.repository';
-import { WashswotConnectionManager } from '../../database/washswot-connection-manager';
+import { WashswatConnectionManager } from '../../database/washswat-connection-manager';
 import {
   CreateTimeDto,
   FindTimeByTimeId,
@@ -9,7 +9,7 @@ import {
 
 export class TimeRepository extends AbstractTimeRepository {
   private getRepository() {
-    return WashswotConnectionManager.getConnection().getRepository(Time);
+    return WashswatConnectionManager.getConnection().getRepository(Time);
   }
 
   public createTime(createTimeDto: CreateTimeDto): Time {

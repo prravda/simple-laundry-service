@@ -1,6 +1,6 @@
 import { Connection, Repository, getConnection } from 'typeorm';
 
-export class WashswotConnectionManager {
+export class WashswatConnectionManager {
   private static connection: Connection;
   private static repository: Repository<any>;
   private constructor() {}

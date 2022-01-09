@@ -1,5 +1,5 @@
 import { AbstractTaskRepository } from './abstracts/abstract.task.repository';
-import { WashswotConnectionManager } from '../../database/washswot-connection-manager';
+import { WashswatConnectionManager } from '../../database/washswat-connection-manager';
 import { Task } from '../../database/entities/task';
 import { DeepPartial, FindManyOptions, FindOneOptions } from 'typeorm';
 import { SoftDeleteCriteriaType } from '../../constants/types/soft-delete-criteria.type';
@@ -9,7 +9,7 @@ export class TaskRepository extends AbstractTaskRepository {
     super();
   }
   private getRepository() {
-    return WashswotConnectionManager.getConnection().getRepository(Task);
+    return WashswatConnectionManager.getConnection().getRepository(Task);
   }
   async save(deepPartialTask: DeepPartial<Task>): Promise<Task> {
     return await this.getRepository().save(deepPartialTask);

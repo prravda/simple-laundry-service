@@ -1,5 +1,5 @@
 import { AbstractTagRepository } from './abstracts/abstract.tag.repository';
-import { WashswotConnectionManager } from '../../database/washswot-connection-manager';
+import { WashswatConnectionManager } from '../../database/washswat-connection-manager';
 import { DeepPartial } from 'typeorm';
 import { CreateTagDto, Tag } from '../../database/entities/tag';
 
@@ -8,7 +8,7 @@ export class TagRepository extends AbstractTagRepository {
     super();
   }
   private getRepository() {
-    return WashswotConnectionManager.getConnection().getRepository(Tag);
+    return WashswatConnectionManager.getConnection().getRepository(Tag);
   }
 
   create(createTagDto: CreateTagDto): Tag {

@@ -1,5 +1,5 @@
 import { AbstractInformationRepository } from './abstracts/abstract.information.repository';
-import { WashswotConnectionManager } from '../../database/washswot-connection-manager';
+import { WashswatConnectionManager } from '../../database/washswat-connection-manager';
 import {
   CreateInformationDto,
   Information,
@@ -11,7 +11,7 @@ export class InformationRepository extends AbstractInformationRepository {
     super();
   }
   private getRepository() {
-    return WashswotConnectionManager.getConnection().getRepository(Information);
+    return WashswatConnectionManager.getConnection().getRepository(Information);
   }
 
   public createInformation(

@@ -5,7 +5,7 @@ import {
   FindAddressWithIdDto,
 } from '../../../database/entities/address';
 import { Repository } from 'typeorm';
-import { WashswotConnectionManager } from '../../../database/washswot-connection-manager';
+import { WashswatConnectionManager } from '../../../database/washswat-connection-manager';
 
 export class AddressRepository extends AbstractAddressRepository {
   constructor() {
@@ -13,7 +13,7 @@ export class AddressRepository extends AbstractAddressRepository {
   }
   private getRepository(): Repository<Address> {
     try {
-      return WashswotConnectionManager.getConnection().getRepository(Address);
+      return WashswatConnectionManager.getConnection().getRepository(Address);
     } catch (e) {
       throw e;
     }

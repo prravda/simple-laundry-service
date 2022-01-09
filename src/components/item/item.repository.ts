@@ -1,7 +1,7 @@
 import { AbstractItemRepository } from './abstracts/abstract.item.repository';
 import { CreateItemDto, Item } from '../../database/entities/item';
 import { DeepPartial } from 'typeorm';
-import { WashswotConnectionManager } from '../../database/washswot-connection-manager';
+import { WashswatConnectionManager } from '../../database/washswat-connection-manager';
 
 export class ItemRepository extends AbstractItemRepository {
   constructor() {
@@ -9,7 +9,7 @@ export class ItemRepository extends AbstractItemRepository {
   }
 
   private getRepository() {
-    return WashswotConnectionManager.getConnection().getRepository(Item);
+    return WashswatConnectionManager.getConnection().getRepository(Item);
   }
 
   create(createItemDto: CreateItemDto): Item {

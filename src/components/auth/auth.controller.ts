@@ -1,7 +1,7 @@
 import { AbstractAuthController } from './abstracts/abstract.auth.controller';
 import { NextFunction, Request, Response, Router } from 'express';
 import passport from 'passport';
-import { WashSwotStrategy } from './strategies/wash-swot-strategy';
+import { WashSwatStrategy } from './strategies/wash-swat-strategy';
 import { AuthorizedUserInterface } from './interface/authorized-user.interface';
 import { AbstractFacadeAuthService } from './abstracts/abstract.facade.auth.service';
 import { successResponseWrapper } from '../../middlewares/response-wrappers/success-response.wrapper';
@@ -19,7 +19,7 @@ export class AuthController extends AbstractAuthController {
 
     router.get(
       '/renew',
-      passport.authenticate(WashSwotStrategy, { session: false }),
+      passport.authenticate(WashSwatStrategy, { session: false }),
       async (req: Request, res: Response, next: NextFunction) => {
         const { uuid } = req.user as AuthorizedUserInterface;
         const result = await this.facadeAuthService.updateCredentialByUUID({

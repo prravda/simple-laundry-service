@@ -1,5 +1,5 @@
 import { AbstractMissionRepository } from './abstracts/abstract.mission.repository';
-import { WashswotConnectionManager } from '../../database/washswot-connection-manager';
+import { WashswatConnectionManager } from '../../database/washswat-connection-manager';
 import { Information } from '../../database/entities/information';
 import { DeepPartial } from 'typeorm';
 import { CreateMissionDto, Mission } from '../../database/entities/mission';
@@ -9,7 +9,7 @@ export class MissionRepository extends AbstractMissionRepository {
     super();
   }
   private getRepository() {
-    return WashswotConnectionManager.getConnection().getRepository(Mission);
+    return WashswatConnectionManager.getConnection().getRepository(Mission);
   }
 
   public create(createMissionDto: CreateMissionDto): Mission {

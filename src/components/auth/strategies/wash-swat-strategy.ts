@@ -18,7 +18,7 @@ const unauthorizedErrorInstance = new UnauthorizedUserError(
 );
 
 const userServiceForValidation = new UserService(new UserRepository());
-export const WashSwotStrategy = new Strategy(
+export const WashSwatStrategy = new Strategy(
   {
     secretOrKey: getConfig().jwtSecret,
     issuer: getConfig().jwtIssuer,

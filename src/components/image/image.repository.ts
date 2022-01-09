@@ -1,4 +1,4 @@
-import { WashswotConnectionManager } from '../../database/washswot-connection-manager';
+import { WashswatConnectionManager } from '../../database/washswat-connection-manager';
 import { AbstractImageRepository } from './abstracts/abstract.image.repository';
 import { CreateImageDto, Image } from '../../database/entities/image';
 import { DeepPartial } from 'typeorm';
@@ -7,7 +7,7 @@ export class ImageRepository extends AbstractImageRepository {
     super();
   }
   private getRepository() {
-    return WashswotConnectionManager.getConnection().getRepository(Image);
+    return WashswatConnectionManager.getConnection().getRepository(Image);
   }
 
   create(createImageDto: CreateImageDto): Image {
